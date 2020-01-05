@@ -1,0 +1,202 @@
+
+  .am-u-lg-12 {
+    width: 100%;
+  }
+  .am-cf:before,
+.am-cf:after {
+  content: " ";
+  display: table;
+}
+.am-cf:after {
+  clear: both;
+}
+.am-fr {
+  float: right;
+}
+.am-fr {
+  right: 0;
+  left: auto;
+}
+.am-fr > .am-dropdown-content {
+  right: 0;
+  left: auto;
+}
+.am-fr > .am-dropdown-content:before {
+  right: 10px;
+  left: auto;
+}
+[class*="am-icon-"].am-fr {
+  margin-left: .3em;
+}
+.am-icon-sm:before {
+  font-size: 150%;
+  vertical-align: -10%;
+}
+.am-icon-md:before {
+  font-size: 200%;
+  vertical-align: -16%;
+}
+.am-icon-lg:before {
+  font-size: 250%;
+  vertical-align: -22%;
+}
+.am-pagination {
+  position: relative;
+}
+/**
+  * Pagination Theme: default
+  */
+.am-pagination-default {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.6rem;
+}
+.am-pagination-default .am-pagination-prev,
+.am-pagination-default .am-pagination-next {
+  float: none;
+}
+/**
+  * Pagination Theme: select
+  */
+.am-pagination-select {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.6rem;
+}
+.am-pagination-select > li > a {
+  line-height: 36px;
+  background-color: #eeeeee;
+  padding: 0 15px;
+  border: 0;
+  color: #555555;
+}
+.am-pagination-select .am-pagination-select {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -35px;
+  width: 70px;
+  height: 36px;
+  text-align: center;
+  border-radius: 0;
+}
+.am-pagination-select .am-pagination-select select {
+  display: block;
+  border: 0;
+  line-height: 36px;
+  width: 70px;
+  height: 36px;
+  border-radius: 0;
+  color: #555555;
+  background-color: #eeeeee;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 18px;
+}
+.am-pagination {
+  position: relative;
+}
+/**
+  * Pagination Theme: default
+  */
+.am-pagination-default {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.6rem;
+}
+.am-pagination-default .am-pagination-prev,
+.am-pagination-default .am-pagination-next {
+  float: none;
+}
+/**
+  * Pagination Theme: select
+  */
+.am-pagination-select {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 1.6rem;
+}
+.am-pagination-select > li > a {
+  line-height: 36px;
+  background-color: #eeeeee;
+  padding: 0 15px;
+  border: 0;
+  color: #555555;
+}
+.am-pagination-select .am-pagination-select {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -35px;
+  width: 70px;
+  height: 36px;
+  text-align: center;
+  border-radius: 0;
+}
+.am-pagination-select .am-pagination-select select {
+  display: block;
+  border: 0;
+  line-height: 36px;
+  width: 70px;
+  height: 36px;
+  border-radius: 0;
+  color: #555555;
+  background-color: #eeeeee;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 18px;
+}
+
+input{           
+          padding: 6px 3px;
+          border-radius: 3px;               
+          background-image: url('../images/search.gif');
+          margin-right: 18px;
+      }
+      input:focus{
+              border-color: #66afe9;
+              outline: 0;
+              -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+              box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+      }
+  #search-button {
+  height: 30px;
+  width: 40px;
+  margin-top:5px;
+  margin-left:-16px;
+  border-radius: 3px;
+  background-image: url('../images/search_btn.gif');
+    
+}
+#search-button:active{
+    box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+    border-color: rgba(0,0,0,.3);
+    background: #bbb;
+}
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {display: inline-block; margin: 3px;}
+
+ul.pagination li a {
+    color: #0E90D2;
+    float: left;
+    font-size: 14px;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+ul.pagination li a.active {
+    background-color: #0E90D2;
+    color: white;
+    border: 1px solid #0E90D2;
+}
+
+ul.pagination li a:hover:not(.active) {background-color: #ddd;}
