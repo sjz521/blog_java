@@ -36,9 +36,19 @@ public class PhotoService extends FileHelper {
 		return photo;
 	}
 	
-	public String DeletePhoto(int id,String path) {
+	/**
+	 * 根据id删除单张图片
+	 * @param id
+	 * @param path
+	 * @return
+	 */
+	public String DeletePhoto(int id,String path,String filePath) {
 		Photo photo = photoDao.GetPhotoById(id);
 		boolean fileResult = delFile(path,photo.getName());
+		if(!fileResult) {
+			return "删除"+photo.getName()+"文件失败";
+		}
+		fileResult = delFile(filePath, photo.getName());
 		if(!fileResult) {
 			return "删除"+photo.getName()+"文件失败";
 		}
@@ -50,11 +60,21 @@ public class PhotoService extends FileHelper {
 		}
 	}
 	
-	public String DeleteAllPhoto(int uId,String path) {
+	/**
+	 * 删除全部图片
+	 * @param uId
+	 * @param path
+	 * @return
+	 */
+	public String DeleteAllPhoto(int uId,String path,String filePath) {
 		List<Photo> photos = photoDao.ShowAll(uId);
 		boolean fileResult = false;
 		for (Photo photo : photos) {
 			fileResult = delFile(path, photo.getName());
+			if(!fileResult) {
+				return "删除"+photo.getName()+"文件失败";
+			}
+			fileResult = delFile(filePath, photo.getName());
 			if(!fileResult) {
 				return "删除"+photo.getName()+"文件失败";
 			}
@@ -66,6 +86,31 @@ public class PhotoService extends FileHelper {
 			return "删除失败";
 		}
 	}
+	
+	/**
+	 * 删除多张图片
+	 * @param ids
+	 * @param path
+	 * @return
+	 */
+	public String DeleteChecked(String[] ids,String path,String filePath) {
+		//1.删除图片文件
+		for (String id : ids) {
+			Photo photo = photoDao.GetPhotoById(Integer.parseInt(id));
+			boolean fileResult = delFile(path, photo.getName());
+			if(!fileResult) {
+				return "删除"+photo.getName()+"文件失败";
+			}
+			fileResult = delFile(filePath, photo.getName());
+		}
+		//2.删除数据库记录
+		boolean result = photoDao.DeleteChecked(ids);
+		if(result) {
+			return "删除成功";
+		}
+		return "删除失败";
+	}
+	
 	
 	public void AddPhoto(Photo photo) {
 		photoDao.AddPhoto(photo);

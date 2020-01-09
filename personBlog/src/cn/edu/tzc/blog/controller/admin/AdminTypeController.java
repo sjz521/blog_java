@@ -65,20 +65,14 @@ public class AdminTypeController extends HttpServlet {
 			request.getRequestDispatcher("/view/admin/type/type_list.jsp").forward(request, response);
 		}
 		else if(method.toLowerCase().equals("delete")) {
-			//删除单个分类
-			int id = Integer.parseInt(request.getParameter("id"));
+			//删除分类
 			String message = "";
-			boolean result = service.deleteType(id);
-			Type type = new Type();
-			try {
-				type = service.getTypeById(id);
-			} catch (TypeException e) {
-				// TODO: handle exception
-			}
-			if(!result) {
-				message = "分类"+type.getName()+"删除失败";
+			String ids = request.getParameter("id");
+			if(ids.contains(",")) {
+				String[] idList = ids.split(",");
+				message = service.delChecked(idList);
 			}else {
-				message = "分类"+type.getName() +"删除成功";
+				message = service.deleteType(Integer.parseInt(ids));
 			}
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");

@@ -169,6 +169,47 @@ public class PhotoDao {
 	}
 	
 	/**
+	 * 删除多张图片
+	 * @param ids
+	 * @return
+	 */
+	public boolean DeleteChecked(String[] ids) {
+		//1.根据id数量组成SQL语句
+		StringBuilder sb = new StringBuilder();
+		sb.append("delete from photo where id in (");
+		int[] params = new int[ids.length];
+		for (int i=0;i<ids.length;i++) {
+			params[i] = Integer.parseInt(ids[i]);
+			if(i == ids.length-1) {
+				sb.append("?");
+			}else {
+				sb.append("?,");
+			}
+		}
+		sb.append(")");
+		//2.运行sql语句
+		boolean result = false;
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement(sb.toString());
+			for(int i=0;i<params.length;i++) {
+				prep.setInt(i+1, params[i]);
+			}
+			int n = prep.executeUpdate();
+			if(n>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		return result;
+	}
+	
+	
+	/**
 	 * 获得相册数量
 	 * @param uId
 	 * @return

@@ -118,25 +118,33 @@
 													function delCheck(){
 														var flag = confirm("确认要删除全部勾选的文章吗？");
 														if(flag){
-															document.getElementById("formID").submit();
+															var s='';
+															$('input[name="articleId"]:checked').each(function(){
+																s+=$(this).val()+',';//遍历得到所有的checkbox的value
+															});
+															if(s.length > 0){
+																//删除多出来的，
+																s = s.substring(0,s.length-1);
+															}
+															//生成连接
+															location.href = "${pageContext.request.contextPath }/admin/article/delete?id="+s;
 														}
 													}
 													
 													//全选/全不选操作
-													function checkAll(){
-														var checkId = document.getElementById("checkID");
-														var ids = document.getElementByName("articleId");
-														if(checkId.checked == false){
-															for(var i=0;i<ids.length;i++){
-																ids[i].checked = false;
+													$(function(){
+														$("#checkID").click(function(){
+															if(this.checked==true){
+																$(".articleId").each(function(){
+																	this.checked=true;
+																});
+															}else{
+																$(".articleId").each(function(){
+																	this.checked=false;
+																});
 															}
-														}
-														else{
-															for(var i=0;i<ids.length;i++){
-																ids[i].checked = true;
-															}
-														}
-													}
+														});
+													});
 													
 												</script>
 												
@@ -191,7 +199,7 @@
 												<input type="hidden" name="method" value="delCheck">
 												<c:forEach items="${page.list }" var="article">
 													<tr class="gradeX">
-															<td><input name="articleId" type="checkbox" value="${article.id }"></td>
+															<td><input class="articleId" name="articleId" type="checkbox" value="${article.id }"></td>
 															<td><img src="${pageContext.request.contextPath }/public/images/articleimg/${article.photo }" class="tpl-table-line-img"
 																alt=""></td>
 															<td class="am-text-middle">${article.title }</td>

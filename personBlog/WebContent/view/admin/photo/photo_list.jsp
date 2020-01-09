@@ -95,11 +95,71 @@
 		                                                    return false;
 		                                                }
 		                                            }
+		                                            
+		                                          //删除勾选
+													function delChecked(){
+														var flag = confirm("确认要删除全部勾选的文章吗？");
+														if(flag){
+															var s='';
+															$('input[name="all"]:checked').each(function(){
+																s+=$(this).val()+',';//遍历得到所有的checkbox的value
+															});
+															if(s.length > 0){
+																//删除多出来的，
+																s = s.substring(0,s.length-1);
+															}
+															//生成连接
+															location.href = "${pageContext.request.contextPath }/admin/photo/delete?id="+s;
+														}
+														else{
+															return false;
+														}
+													}
+		                                            
+		                                          //全选全不选
+													$(function(){
+														$("#all").click(function(){
+															if(this.checked==true){
+																$(".all").each(function(){
+																	this.checked=true;
+																});
+															}else{
+																$(".all").each(function(){
+																	this.checked=false;
+																});
+															}
+														});
+													});
+													
+													
+													/*$("#delChecked").click(function(){
+														var flag = confirm("确认要删除全部勾选的文章吗？");
+														if(flag){
+															var s='';
+															$('input[name="all"]:checked').each(function(){
+																s+=$(this).val()+',';//遍历得到所有的checkbox的value
+															});
+															if(s.length > 0){
+																//删除多出来的，
+																s = s.substring(0,s.length-1);
+															}
+															//生成连接
+															location.href = "${pageContext.request.contextPath }/admin/photo/delete?id="+s;
+														}
+														
+													});*/
+		                                            
 		                                        </script>
 		                                        <button type="button" class="am-btn am-btn-default am-btn-success">
 		                                            <span class="am-icon-plus"></span> 
-		                                            <a href="${pageContext.request.contextPath }/admin/photo/edit" class="color">新增</a></button>
-		                                        <button type="button" onclick="delAllMessage();" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除全部</button>
+		                                            <a href="${pageContext.request.contextPath }/admin/photo/edit" class="color">新增</a>
+		                                           </button>
+		                                        <button type="button" onclick="delAllMessage();" class="am-btn am-btn-default am-btn-danger">
+		                                        	<span class="am-icon-trash-o"></span> 删除全部
+		                                        </button>
+		                                        <button type="button" onclick="delChecked()" class="am-btn am-btn-default am-btn-secondary">
+		                                            <span class="am-icon-plus">删除勾选</span> 
+	                                        	</button>
 		                                    </div>
 		                                </div>
 		                            </div>
@@ -109,6 +169,7 @@
 		                            <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
 		                                <thead>
 		                                    <tr>
+		                                    	<th><input type="checkbox" id="all"/></th>
 		                                        <th>图片</th>
 		                                        <th>图片名称</th>
 		                                        <th>作者</th>
@@ -119,17 +180,18 @@
 		                                <tbody>
 		                                    <c:forEach items="${page.list }" var="photo">
 		                                    	<tr class="gradeX">
-		                                        <td><img src="../public/images/photos/${photo['name'] }" class="tpl-table-line-img"></td>
-		                                        <td>${photo['name'] }</td>
-		                                        <td>${photo['userName'] }</td>
-		                                        <td>${photo['created_at'] }</td>
-		                                        <td>
-		                                            <div class="tpl-table-black-operation">
-		                                                <a href="javascript:void(0);" onclick="delMessage(${photo['id'] })" class="tpl-table-black-operation-del">
-		                                                    <i class="am-icon-trash"></i> 删除
-		                                                </a>
-		                                            </div>
-		                                        </td>
+			                                    	<td><input type="checkbox" class="all" name="all" value="${photo['id']}"></td>
+			                                        <td><img src="../public/images/photos/${photo['name'] }" class="tpl-table-line-img"></td>
+			                                        <td>${photo['name'] }</td>
+			                                        <td>${photo['userName'] }</td>
+			                                        <td>${photo['created_at'] }</td>
+			                                        <td>
+			                                            <div class="tpl-table-black-operation">
+			                                                <a href="javascript:void(0);" onclick="delMessage(${photo['id'] })" class="tpl-table-black-operation-del">
+			                                                    <i class="am-icon-trash"></i> 删除
+			                                                </a>
+			                                            </div>
+			                                        </td>
 		                                    </tr>
 		                                    </c:forEach>
 		                                    

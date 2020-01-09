@@ -64,6 +64,8 @@ public class FileHelper {
 		File file = new File(path+separator+fileName);
 		if(file.exists()) {
 			result = file.delete();
+		}else {
+			result = true;
 		}
 		return result;
 	}

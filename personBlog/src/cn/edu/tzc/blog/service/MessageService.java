@@ -61,6 +61,19 @@ public class MessageService {
 	}
 	
 	/**
+	 * 删除勾选的留言
+	 * @param ids
+	 * @return
+	 */
+	public String DeleteChecked(String[] ids) {
+		boolean result = dao.DeleteChecked(ids);
+		if(result) {
+			return "删除成功";
+		}
+		return "删除失败";
+	}
+	
+	/**
 	 * 获得所有留言数
 	 * @return
 	 */

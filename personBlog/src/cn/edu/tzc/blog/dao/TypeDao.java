@@ -192,4 +192,47 @@ public class TypeDao {
 		
 		return type;
 	}
+	
+	/**
+	 * 删除多篇文章
+	 * @param ids
+	 * @return
+	 */
+	public boolean deleteChecked(String[] ids) {
+		boolean result = false;
+		
+		//1.处理sql语句
+		StringBuilder sb = new StringBuilder();
+		sb.append("delete from type where id in (");
+		int[] params = new int[ids.length];
+		for (int i=0;i<ids.length;i++) {
+			params[i] = Integer.parseInt(ids[i]);
+			if(i == ids.length-1) {
+				sb.append("?");
+			}else {
+				sb.append("?,");
+			}
+		}
+		sb.append(")");
+		//2.运行语句
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement(sb.toString());
+			for(int i=0;i<params.length;i++) {
+				prep.setInt(i+1, params[i]);
+			}
+			int n = prep.executeUpdate();
+			if(n>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		
+		return result;
+	}
+	
 }

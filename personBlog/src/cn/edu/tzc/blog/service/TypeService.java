@@ -53,8 +53,16 @@ public class TypeService {
 	 * @param id
 	 * @return
 	 */
-	public boolean deleteType(int id) {
-		return typeDao.deleteType(id);
+	public String deleteType(int id) {
+		Type type = typeDao.getTypeById(id);
+		String message = "分类"+type.getName();
+		boolean result = typeDao.deleteType(id);
+		if(result) {
+			message += "删除成功";
+		}else {
+			message += "删除失败";
+		}
+		return message;
 	}
 	
 	/**
@@ -82,9 +90,22 @@ public class TypeService {
 	 */
 	public Page<TypeInfo> findTypeWithPage(int pageIndex,int pageSize){
 		int totalRecord = typeDao.getCount();
-		Page<TypeInfo> page = new Page<>(pageIndex, pageSize, totalRecord);
+		Page<TypeInfo> page = new Page(pageIndex, pageSize, totalRecord);
 		List<TypeInfo> list = typeDao.getTypeInfos(pageSize, pageIndex);
 		page.setList(list);
 		return page;
+	}
+	
+	/**
+	 * 删除多篇文章
+	 * @param ids
+	 * @return
+	 */
+	public String delChecked(String[] ids) {
+		boolean result = typeDao.deleteChecked(ids);
+		if(result) {
+			return "删除成功";
+		}
+		return "删除失败";
 	}
 }

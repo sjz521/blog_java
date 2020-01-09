@@ -43,7 +43,13 @@ public class AdminArticleDeleteController extends HttpServlet {
 			if("" == ids || ids == null) {
 				message = articleService.DeleteAllArticle(user.getId(),path);
 			}else {
-				message = articleService.DeleteArticle(Integer.parseInt(ids),path);
+				if(ids.contains(",")) {
+					String[] idList = ids.split(",");
+					message = articleService.delCheck(idList, filePath);
+				}
+				else {
+					message = articleService.DeleteArticle(Integer.parseInt(ids),path);
+				}
 			}
 			String url = request.getContextPath()+"/admin/article";
 			pw.write("<html><body><script language='javascript'>alert("+message+");window.location.href='\"+url+\"';</script></body></html>");

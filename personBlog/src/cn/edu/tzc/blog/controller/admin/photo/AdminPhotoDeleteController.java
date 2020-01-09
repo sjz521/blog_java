@@ -49,9 +49,14 @@ public class AdminPhotoDeleteController extends HttpServlet {
 		String message = "";
 		try {
 			if("" == ids || ids == null) {
-				message = photoService.DeleteAllPhoto(user.getId(),path);
+				message = photoService.DeleteAllPhoto(user.getId(),path,filePath);
 			}else {
-				message = photoService.DeletePhoto(Integer.parseInt(ids),path);
+				if(ids.contains(",")) {
+					message = photoService.DeleteChecked(ids.split(","), path,filePath);
+				}
+				else {
+					message = photoService.DeletePhoto(Integer.parseInt(ids),path,filePath);
+				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

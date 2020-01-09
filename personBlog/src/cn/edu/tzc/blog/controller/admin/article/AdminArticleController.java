@@ -83,24 +83,7 @@ public class AdminArticleController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
-		PrintWriter pw = response.getWriter();
-		ArticleService articleService = new ArticleService();
-		
-		String method = request.getParameter("method");
-		if("delCheck".equals(method)) {
-			String[] ids = request.getParameterValues("articleId");
-			
-			String result = articleService.delCheck(ids);
-			String url = request.getContextPath()+"/admin/article";
-			pw.println("<html><body><script language='javascript'>alert('"+result+"');window.location.href='"+url+"';</script></body></html>");
-			pw.close();
-			return;
-		}
-		else {
-			doGet(request, response);
-		}
+		doGet(request, response);
 	}
 	
 }

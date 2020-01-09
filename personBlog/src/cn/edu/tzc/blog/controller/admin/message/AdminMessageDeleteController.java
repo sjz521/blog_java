@@ -23,16 +23,28 @@ public class AdminMessageDeleteController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String method = request.getParameter("method");
+		String ids = request.getParameter("id");
 		String message = "";
 		MessageService service = new MessageService();
+		if(ids==null || "".equals(ids)) {
+			message = service.DeleteAllMessage();
+		}else {
+			if(ids.contains(",")) {
+				message = service.DeleteChecked(ids.split(","));
+			}else {
+				message = service.DeleteMessage(Integer.parseInt(ids));
+			}
+		}
+		/*String method = request.getParameter("method");
+		String message = "";
+		
 		if("all" == method) {
 			message = service.DeleteAllMessage();
 		}
 		else if("single" == method) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			message = service.DeleteMessage(id);
-		}
+		}*/
 		response.setContentType("text/html;charset=	UTF-8");
 		PrintWriter pw = response.getWriter();
 		pw.write("<html><body><script language='javascript'>alert("+message+")</script></body></html>");

@@ -201,12 +201,20 @@ public class ArticleService extends FileHelper {
 		return page;
 	}
 	
+	
 	/**
 	 * 删除多篇文章
 	 * @param ids
 	 * @return
 	 */
-	public String delCheck(String[] ids) {
+	public String delCheck(String[] ids,String path) {
+		//1.删除文件
+		for (String id : ids) {
+			ArticleInfo article = articleDao.FindById(Integer.parseInt(id));
+			delFile(path, article.getPhoto());
+		}
+		
+		//2.删除数据
 		boolean result = articleDao.DeleteCheck(ids);
 		if(result) {
 			return "删除成功";

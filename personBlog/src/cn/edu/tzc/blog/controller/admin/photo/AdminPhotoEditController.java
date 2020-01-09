@@ -92,6 +92,7 @@ public class AdminPhotoEditController extends HttpServlet {
 			int endIndex = path.lastIndexOf(projectName);
 			String filePath = path.substring(0, beginIndex+projectName.length()+1)+projectName+"/WebContent//"+path.substring(endIndex+projectName.length()+1);
 			
+			service.uploadFile(image, path,fileName);
 			boolean fileResult =service.uploadFile(image, filePath, fileName);
 			if(!fileResult) {
 				String url = request.getContextPath()+"/admin/photo/edit";

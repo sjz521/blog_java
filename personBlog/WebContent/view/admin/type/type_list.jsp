@@ -87,6 +87,7 @@
 																return false;
 															}	
 														}
+														
 														function delType(a){
 				                                            var con = confirm("是否确认删除这条标签???删除后相应的文章也会删除");
 				                                            if(con==true){
@@ -95,6 +96,40 @@
 				                                            	return false;
 				                                            }
 			                                        	}
+														
+														//删除勾选
+														function delCheck(){
+															var flag = confirm("确认要删除全部勾选的文章吗？");
+															if(flag){
+																var s='';
+																$('input[name="all"]:checked').each(function(){
+																	s+=$(this).val()+',';//遍历得到所有的checkbox的value
+																});
+																if(s.length > 0){
+																	//删除多出来的，
+																	s = s.substring(0,s.length-1);
+																}
+																//生成连接
+																location.href = "${pageContext.request.contextPath }/admin/type?method=delete&id="+s;
+															}
+															
+														}
+														
+														//全选全不选
+														$(function(){
+															$("#all").click(function(){
+																if(this.checked==true){
+																	$(".all").each(function(){
+																		this.checked=true;
+																	});
+																}else{
+																	$(".all").each(function(){
+																		this.checked=false;
+																	});
+																}
+															});
+														});
+														
 												</script>
 												<button type="button" class="am-btn am-btn-default am-btn-success">
 		                                            <span class="am-icon-plus"></span> 
@@ -102,6 +137,9 @@
 		                                        </button>
 												<button type="button" onclick="delAllTypes();" class="am-btn am-btn-default am-btn-danger">
 													<span class="am-icon-trash-o"></span> 删除全部
+												</button>
+												<button type="button" onclick="delCheck();" class="am-btn am-btn-default am-btn-secondary">
+													<span class="am-icon-trash-o"></span> 删除勾选
 												</button>
 											</div>
 										</div>
@@ -113,6 +151,7 @@
 										class="am-table am-table-compact am-table-striped tpl-table-black ">
 										<thead>
 											<tr>
+												<th><input type="checkbox" id="all"/></th>
 												<th>标签名</th>
 												<th>创建时间</th>
 												<th>文章数目</th>
@@ -121,6 +160,9 @@
 										</thead>
 										<tbody>
 											<c:forEach items="${page.list }" var="type">
+												<tr>
+													<input type="checkbox" class="all" name="all" value="${type.id}">
+												</tr>
 												<tr class="gradeX">
 														<td class="am-text-middle">${type.name }</td>
 														<td class="am-text-middle">${type.created_at }</td>
@@ -147,10 +189,10 @@
 												<c:forEach begin="${page.start }" end="${page.end }" var="i" step="1">
 													<c:choose>
 														<c:when test="${page.pageIndex==i-1 }">
-															<li class="am-active"><a href="${pageContext.request.contextPath}/admin/type?method=show&pageIndex=${i-1}"></a>${i }</li>
+															<li class="am-active"><a href="${pageContext.request.contextPath}/admin/type?method=show&pageIndex=${i-1}">${i }</a></li>
 														</c:when>
 														<c:otherwise>
-															<li><a href="${pageContext.request.contextPath}/admin/type?method=show&pageIndex=${i-1}"></a>${i }</li>
+															<li><a href="${pageContext.request.contextPath}/admin/type?method=show&pageIndex=${i-1}">${i }</a></li>
 														</c:otherwise>
 													</c:choose>
 													

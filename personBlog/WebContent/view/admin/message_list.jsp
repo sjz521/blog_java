@@ -83,22 +83,62 @@
 															function delAllMessage(){
 																var con = confirm("是否确认全部删除！！！");
 																if(con==true){
-																	location.href = "${pageContext.request.contextPath}/admin/message/delete?method=all";
+																	location.href = "${pageContext.request.contextPath}/admin/message/delete";
 																}else{
 																	return false;
 																}
 															}
+															
 															function delMessage(a){
 					                                            var con = confirm("是否确认删除这条数据???");
 					                                            if(con==true){
-					                                                location.href = "${pageContext.request.contextPath}/admin/message/delete?method=single&id="+a;
+					                                                location.href = "${pageContext.request.contextPath}/admin/message/delete?id="+a;
 					                                            }else{
 					                                            	return false;
 					                                            }
 				                                        	}
+															
+															//删除勾选
+															function delChecked(){
+																var flag = confirm("确认要删除全部勾选的文章吗？");
+																if(flag){
+																	var s='';
+																	$('input[name="all"]:checked').each(function(){
+																		s+=$(this).val()+',';//遍历得到所有的checkbox的value
+																	});
+																	if(s.length > 0){
+																		//删除多出来的，
+																		s = s.substring(0,s.length-1);
+																	}
+																	//生成连接
+																	location.href = "${pageContext.request.contextPath }/admin/message/delete?id="+s;
+																}
+																else{
+																	return false;
+																}
+															}
+															
+															//全选全不选
+															$(function(){
+																$("#all").click(function(){
+																	if(this.checked==true){
+																		$(".all").each(function(){
+																			this.checked=true;
+																		});
+																	}else{
+																		$(".all").each(function(){
+																			this.checked=false;
+																		});
+																	}
+																});
+															});
+															
 													</script>
 													<button type="button" onclick="delAllMessage();" class="am-btn am-btn-default am-btn-danger">
 														<span class="am-icon-trash-o"></span> 删除全部
+													</button>
+													<button type="button" onclick="delChecked();" class="am-btn am-btn-default am-btn-secondary">
+														<span class="am-icon-trash-o"></span> 删除勾选
 													</button>
 												</div>
 											</div>
@@ -110,6 +150,7 @@
 											class="am-table am-table-compact am-table-striped tpl-table-black ">
 											<thead>
 												<tr>
+													<th><input type="checkbox" id="all"/></th>
 													<th>留言人用户名</th>
 													<th>留言内容</th>
 													<th>留言文章</th>
@@ -121,17 +162,18 @@
 												<!-- 循环开始 -->
 												<c:forEach items="${page.list }" var="message">
 													<tr class="gradeX">
-															<td class="am-text-middle">${message.name }</td>
-															<td class="am-text-middle">${message.content }</td>
-															<td class="am-text-middle">${message.title }</td>
-															<td class="am-text-middle">${message.created_at }</td>
-															<td class="am-text-middle">
-																<div class="tpl-table-black-operation"> 
-																	<a href="javascript:void(0);" onclick="delMessage(${message.id})" class="tpl-table-black-operation-del"> 
-																		<i class="am-icon-trash"></i>删除 
-																	</a>
-																</div>
-															</td>
+														<td><input type="checkbox" class="all" name="all" value="${message.id}"></td>
+														<td class="am-text-middle">${message.name }</td>
+														<td class="am-text-middle">${message.content }</td>
+														<td class="am-text-middle">${message.title }</td>
+														<td class="am-text-middle">${message.created_at }</td>
+														<td class="am-text-middle">
+															<div class="tpl-table-black-operation"> 
+																<a href="javascript:void(0);" onclick="delMessage(${message.id})" class="tpl-table-black-operation-del"> 
+																	<i class="am-icon-trash"></i>删除 
+																</a>
+															</div>
+														</td>
 														</tr>
 													
 												</c:forEach>
