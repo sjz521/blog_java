@@ -21,6 +21,7 @@
 	    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 	    
 	    <script type="text/javascript">
+	    
             function changepic(obj){
                 var newsrc = getObjectURL(obj.files[0]);
                 document.getElementById('show').src = newsrc;
@@ -38,32 +39,47 @@
                 return url;
             }
             
-            function check(){
-            	var password1 = document.getElemontById("newPassword").value;
-            	var password2 = document.getElemontById("newPassword2").value;
-            	var oldPassword = document.form1.oldPassword.value;
-            	if(oldPassword!=""){
-            		if(password1!=password2){
-                		alert("两次密码输入不一致，请确认后重新输入");
-                		document.getElementById("submit").disabled=true;
-                		return false;
-                	}else{
-                		document.getElementById("submit").disabled=false;
-                		return true;
-                	}
+            function validate(){
+            	var password = $("#oldPassword").val();
+            	if(password == ""){
+            		$("#tishi1").html("原始密码不能为空");
+            		$("#tishi1").css("color","red");
+            		$("#submit").attr("disabled","disabled");
+            	}
+            	var pwd = $("#newPassword").val();
+            	var pwd1 = $("#confirmPassword").val();
+            	if(pwd == pwd1){
+            		$("#tishi").html("两次密码相同");
+            		$("#tishi").css("color","green");
+            		$("#submit").removeAttr("disabled");
+            	}
+            	else{
+            		$("#tishi").html("两次密码不相同");
+            		$("#tishi").css("color","red");
+            		$("#submit").attr("disabled","disabled");
             	}
             }
             
             function checkOldPassword(obj){
-            	var password = document.getElemontById("oldPassword").value;
-            	if(password!=""){
+            	var password = $("#oldPassword").val();
+            	if(password==""){
+            		$("#tishi1").html("原始密码不能为空");
+            		$("#tishi1").css("color","red");
+            		$("#submit").attr("disabled","disabled");
+            	}else{
             		if(password != obj){
-            			alert("输入的原始密码不对，请确认后重新输入");
+            			$("#tishi1").html("原始密码错误");
+                		$("#tishi1").css("color","red");
+                		$("#submit").attr("disabled","disabled");
+            		}else{
+            			$("#tishi1").html("原始密码正确");
+                		$("#tishi1").css("color","green");
+                		$("#submit").removeAttr("disabled");
             		}
             	}
             }
         </script>
-	
+		
 	</head>
 	
 	<body data-type="index">
@@ -105,7 +121,7 @@
 			                    <div class="widget-body am-fr">
 									<p style="color:red; font-weight:900"> ${message }</p>
 			                        <form class="am-form tpl-form-border-form tpl-form-border-br" name="from1"
-			                        action="${pageContext.request.contextPath}/admin/person" method="post" enctype="multipart/form-data">
+			                        action="${pageContext.request.contextPath}/admin/person?method=password" method="post">
 			                        	<input type="hidden" value="${user.id }" name="id">
 			
 			                            <div class="am-form-group">
@@ -116,64 +132,41 @@
 			                                    <input type="email" class="tpl-form-input" id="user-name" value="${user.email }" name="email" placeholder="" readonly="true">
 			                                </div>
 			                            </div>
-			                        
-			                            <div class="am-form-group">
-			                                <label for="user-name" class="am-u-sm-3 am-form-label">用户名 
-			                                    <span class="tpl-form-line-small-title"></span>
-			                                </label>
-			                                <div class="am-u-sm-9">
-			                                    <input type="text" class="tpl-form-input" id="user-name" value="${user.name }" name="name" placeholder="请输入用户名">
-			                                </div>
-			                            </div>
-			
-			                            <div class="am-form-group">
-			                                <label for="user-weibo" class="am-u-sm-3 am-form-label">头像 <span class="tpl-form-line-small-title"></span></label>
-			                                <div class="am-u-sm-9">
-			                                    <div class="am-form-group am-form-file">
-			                                        <div class="tpl-form-file-img">
-			                                            <img src="../public/images/headimg/${user.photo }" alt="" width="100px" height="100px" id="show">
-			                                        </div>
-			                                        <button type="button" class="am-btn am-btn-danger am-btn-sm">
-			                                            <i class="am-icon-cloud-upload"></i> 选择图片
-			                                        </button>
-			                                        <input id="doc-form-file" type="file" name="photo" onchange="changepic(this)">
-			                                    </div>
-			
-			                                </div>
-			                            </div>
 			                            
+			                            <div class="am-form-group">
+			                                <label for="user-phone" class="am-u-sm-3 am-form-label">请输入原始密码 <span class="tpl-form-line-small-title"></span></label>
+			                                <div class="am-u-sm-9">
+			                                     <input type="password" class="tpl-form-input" id="oldPassword" value="" name="oldPassword" placeholder="密码" onkeyup="checkOldPassword(${user.password})">
+			                                     <span id="tishi1"></span>
+			                                </div>
+			                            </div>
 			                            
 										<div class="am-form-group">
-			                                <label for="user-phone" class="am-u-sm-3 am-form-label">个人简介 <span class="tpl-form-line-small-title"></span></label>
+			                                <label for="user-phone" class="am-u-sm-3 am-form-label">请输入新的密码 <span class="tpl-form-line-small-title"></span></label>
 			                                <div class="am-u-sm-9">
-			                                     <textarea class="" rows="10" id="user-intro"placeholder="请输入文章内容"  name="introduce">${user.introduction }</textarea>
+			                                     <input type="password" class="tpl-form-input" id="newPassword" value="" name="newPassword" placeholder="密码">
+			                                </div>
+			                            </div>
+			
+			                            <div class="am-form-group">
+			                                <label for="user-phone" class="am-u-sm-3 am-form-label">确认密码 <span class="tpl-form-line-small-title"></span></label>
+			                                <div class="am-u-sm-9">
+			                                     <input type="password" class="tpl-form-input" id="confirmPassword" value="" name="confirmPassword" placeholder="确认密码" onkeyup="validate()">
+			                                     <span id="tishi"></span>
 			                                </div>
 			                            </div>
 			
 			                            <div class="am-form-group">
 			                                <div class="am-u-sm-9 am-u-sm-push-3">
 			                                    <input type="submit" value="修改" class="am-btn am-btn-primary tpl-btn-bg-color-success" id="submit">
-			                                    <span style="margin-right:30px;"></span>
 			                                    <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success"
-													onclick="location.href='${pageContext.request.contextPath }/admin/person?method=password';">
+													onclick="location.href='${pageContext.request.contextPath }/admin/person';">
 													<span></span> 
-													<a href="${pageContext.request.contextPath }/admin/person?method=password" class="color"></a>
-													修改密码
+													<a href="${pageContext.request.contextPath }/admin/person" class="color"></a>
+													取消
 												</button>
 			                                </div>
 			                            </div>
-			                            
-			                            <!-- <div class="am-form-group">
-			                                <div class="am-u-sm-9 am-u-sm-push-3">
-			                                	<button type="button" class="am-btn am-btn-default am-btn-success"
-													onclick="location.href='${pageContext.request.contextPath }/admin/person?method=password';">
-													<span></span> 
-													<a href="${pageContext.request.contextPath }/admin/person?method=password" class="color"></a>
-													修改密码
-												</button>
-			                                </div>
-			                            </div> -->
-			                            
 			                        </form>
 						        
 						        </div>

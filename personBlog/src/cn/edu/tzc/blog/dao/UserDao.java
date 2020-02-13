@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.FastHashMap;
 import org.apache.taglibs.standard.lang.jstl.test.beans.PublicInterface2;
 
 import com.mysql.jdbc.interceptors.ResultSetScannerInterceptor;
@@ -156,19 +157,24 @@ public class UserDao {
 	 * 用户更新
 	 * @param user
 	 */
-	public void UpdateUser(User user) {
+	public boolean UpdateUser(User user) {
 		Connection connection = DBUtil.getConnection();
+		boolean result = true;
 		try {
-			PreparedStatement prep = connection.prepareStatement("update user set name=?,password=?,photo=? where id=?");
+			PreparedStatement prep = connection.prepareStatement("update user set name=?,password=?,photo=?,introduction=? where id=?");
 			prep.setString(1, user.getName());
 			prep.setString(2, user.getPassword());
 			prep.setString(3, user.getPhoto());
+			prep.setString(4, user.getIntroduction());
+			prep.setInt(5, user.getId());
 			prep.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			result = false;
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
+			return result;
 		}
 	}
 	

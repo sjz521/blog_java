@@ -65,9 +65,14 @@ public class UserService {
 	 * 用户更新信息
 	 * @param user
 	 */
-	public void updateUser(User user) {
+	public String updateUser(User user) {
 		//User oldUser =  userDao.findByEmail(user.getEmail());
-		userDao.UpdateUser(user);
+		boolean result = userDao.UpdateUser(user);
+		if(result) {
+			return "修改成功";
+		}else {
+			return "修改失败";
+		}
 	}
 	
 	/**

@@ -3,6 +3,7 @@ package cn.edu.tzc.blog.controller.admin;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -41,9 +42,15 @@ public class AdminPersonDataController extends HttpServlet {
 		}
 		
 		request.setAttribute("user", user);
-		
 		request.setAttribute("personClass", "class=\"active\"");
-		request.getRequestDispatcher("/view/admin/person_message.jsp").forward(request, response);
+		
+		String method = request.getParameter("method");
+		if("password".equals(method)) {
+			request.getRequestDispatcher("/view/admin/person_password.jsp").forward(request, response);
+		}
+		else {
+			request.getRequestDispatcher("/view/admin/person_message.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -53,61 +60,53 @@ public class AdminPersonDataController extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		PrintWriter pw = response.getWriter();
 		
-		try {
-			DiskFileItemFactory factory = new DiskFileItemFactory();
-			ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setHeaderEncoding("utf-8");
-			List<FileItem> list = upload.parseRequest(new ServletRequestContext(request));
-			int id = Integer.parseInt(list.get(0).getString("utf-8"));//用户id
-			String email = list.get(1).getString("utf-8");
-			String name = list.get(2).getString("utf-8");
-			String oldPassword = list.get(3).getString("utf-8");
-			String newPassword = list.get(4).getString("utf-8");
-			String newPassword2 = list.get(5).getString("utf-8");
-			FileItem photo = list.get(6);
-			String introduction = list.get(7).getString("utf-8");
-			
+		String method = request.getParameter("method");
+		if("password".equals(method)) {
+			//1.获得邮箱和密码
+			String email = request.getParameter("email");
+			String password = request.getParameter("newPassword");
+			//2.更新密码
 			UserService service = new UserService();
 			User user = service.GetUserByEmail(email);
-			user.setName(name);
-			user.setIntroduction(introduction);
-			if(""!=newPassword && newPassword!=null || ""!=newPassword2 && newPassword2!=null) {
-				if("" == oldPassword || oldPassword==null) {
-					request.setAttribute("message", "请输入原密码");
-					doGet(request, response);
-					return;
-				}
-				if(newPassword!=newPassword2) {
-					request.setAttribute("message", "两次密码输入不一致！！！");
-					doGet(request, response);
-					return;
-				}
-			}
-			if(""!=oldPassword && oldPassword!=null) {
-				if(oldPassword!=user.getPassword()) {
-					request.setAttribute("message", "输入的原密码与原密码不符，请确认后重新输入！");
-					doGet(request, response);
-					return;
-				}
-			}
-			user.setPassword(newPassword);
-			
-			if(photo!=null) {
-				String path = this.getServletContext().getRealPath("/WebContent/public/images/photos");
-				String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
-				int beginIndex = path.indexOf(projectName);
-				int endIndex = path.lastIndexOf(projectName);
-				String filePath = path.substring(0, beginIndex+projectName.length()+1)+path.substring(endIndex);
+			user.setPassword(password);
+			String message = service.updateUser(user);
+			request.setAttribute("message", message);
+		}
+		else {
+			try {
+				DiskFileItemFactory factory = new DiskFileItemFactory();
+				ServletFileUpload upload = new ServletFileUpload(factory);
+				upload.setHeaderEncoding("utf-8");
+				List<FileItem> list = upload.parseRequest(new ServletRequestContext(request));
+				int id = Integer.parseInt(list.get(0).getString("utf-8"));//用户id
+				String email = list.get(1).getString("utf-8");
+				String name = list.get(2).getString("utf-8");
+				FileItem photo = list.get(3);
+				String introduction = list.get(4).getString("utf-8");
 				
-				String fileName = uploadPhoto(photo, filePath);
-				user.setPhoto(fileName);
+				UserService service = new UserService();
+				User user = service.GetUserByEmail(email);
+				user.setName(name);
+				user.setIntroduction(introduction);
+				
+				if(photo!=null) {
+					String path = this.getServletContext().getRealPath("/WebContent/public/images/photos");
+					String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
+					int beginIndex = path.indexOf(projectName);
+					int endIndex = path.lastIndexOf(projectName);
+					String filePath = path.substring(0, beginIndex+projectName.length()+1)+path.substring(endIndex);
+					
+					String fileName = uploadPhoto(photo, filePath);
+					user.setPhoto(fileName);
+				}
+				String message = service.updateUser(user);
+				request.setAttribute("message", message);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
 			}
-			service.updateUser(user);
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
 		}
 		doGet(request, response);
 	}
