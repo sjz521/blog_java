@@ -28,29 +28,63 @@
 		.table-a table td,th{
 			border:1px solid #000000
 		}
+		
+		.editormd-text{
+			width : 90%
+		}
 	</style>
 	
+	<!-- Editor css... -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/editor/css/editormd.preview.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/editor/css/editormd.css">
+    
+    <!-- Editor js... -->
+    <script src="${pageContext.request.contextPath }/editor/js/editormd.min.js"></script>
+    <script src="${pageContext.request.contextPath }/editor/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath }/editor/lib/marked.min.js"></script>
+    <script src="${pageContext.request.contextPath }/editor/lib/prettify.min.js"></script>
+    
+   	<script type="text/javascript">
+		function validate(){
+			var name = document.getElementById("m_name");
+			var text = document.getElementById("m_text");
+			var verification = document.getElementById("verification");
+			if(username.value==""){
+		//		document.getElementById("UN_status").innerHTML = "账号未填写！";
+				alert("ID未填写！");
+				m_name.focus();
+				return false;
+			}
+			if(password.value==""){
+		//		document.getElementById("PW_status").innerHTML = "密码未填写！";
+				alert("内容未填写！");
+				m_text.focus();
+				return false;
+			}
+			return true;
+		}
+		
+		$.get('${pageContext.request.contextPath }/md/${articleInfo.content }').success(function(elem){
+			$("#mdText").text(elem);
+			editormd.markdownToHTML("content",{
+				htmlDecode		: "style,script,iframe",
+				emoji			: true,
+				taskList		: true,
+				tex				: true,
+				flowChart		: true,
+				sequenceDiagram : true
+			});
+		});
+		
+	</script>
+	
+	<!-- Editor markdown转html -->
+	<!-- <script>
+		editormd.markdownToHTML("content",{emoji:true})
+	</script> -->
+	
 </head>
-<script type="text/javascript">
-function validate(){
-	var name = document.getElementById("m_name");
-	var text = document.getElementById("m_text");
-	var verification = document.getElementById("verification");
-	if(username.value==""){
-//		document.getElementById("UN_status").innerHTML = "账号未填写！";
-		alert("ID未填写！");
-		m_name.focus();
-		return false;
-	}
-	if(password.value==""){
-//		document.getElementById("PW_status").innerHTML = "密码未填写！";
-		alert("内容未填写！");
-		m_text.focus();
-		return false;
-	}
-	return true;
-}
-</script>
+
 <body>
 	<div class="main">
 		<div class="header">
@@ -87,7 +121,10 @@ function validate(){
 									<span>类型：${articleInfo.typeName }</span>
 								</p>
 								<ul class="infos table-a">
-									${articleInfo.content }
+									<div class="editormd-preview-theme" id="content">
+										<!-- ${articleInfo.content}  -->
+										<textarea style="display:none;" id="mdText"></textarea>
+									</div> 
 								</ul>
 							</div>
 						</article>
@@ -97,7 +134,7 @@ function validate(){
 					<br>
 					<br>
 					<hr>
-
+					<!-- 留言板 -->
 					<div class="article">
 						<div class="article">
 							<div class="clr" align="center">
@@ -128,7 +165,7 @@ function validate(){
 						
 							<c:forEach items="${page.list }" var="message">
 								<div class="comment">
-									<p style="font-size: 13px; margin-bottom: 0px">
+									<p style="font-size: 13px; margin-bottom: 0px;">
 										<a href="#">${message.name }</a> &nbsp;留言时间:<br />${message.created_at }
 									</p>
 									<p style="font-size: 16px;">${message.content }</p>

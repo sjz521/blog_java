@@ -160,21 +160,19 @@
 										</thead>
 										<tbody>
 											<c:forEach items="${page.list }" var="type">
-												<tr>
-													<input type="checkbox" class="all" name="all" value="${type.id}">
-												</tr>
 												<tr class="gradeX">
-														<td class="am-text-middle">${type.name }</td>
-														<td class="am-text-middle">${type.created_at }</td>
-														<td class="am-text-middle">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/admin/article?tid=${type.id}">${type.articleCount }</a></td>
-														<td class="am-text-middle">
-															<div class="tpl-table-black-operation"> 
-																<a href="javascript:void(0);" onclick="delType(${type.id})" class="tpl-table-black-operation-del">
-																	<i class="am-icon-trash"></i>删除 
-																</a>
-															</div>
-														</td>
-													</tr>
+													<td class="am-text-middle"><input type="checkbox" class="all" name="all" value="${type.id}"></td>
+													<td class="am-text-middle">${type.name }</td>
+													<td class="am-text-middle">${type.created_at }</td>
+													<td class="am-text-middle">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/admin/article?tid=${type.id}">${type.articleCount }</a></td>
+													<td class="am-text-middle">
+														<div class="tpl-table-black-operation"> 
+															<a href="javascript:void(0);" onclick="delType(${type.id})" class="tpl-table-black-operation-del">
+																<i class="am-icon-trash"></i>删除 
+															</a>
+														</div>
+													</td>
+												</tr>
 												
 											</c:forEach>
 												

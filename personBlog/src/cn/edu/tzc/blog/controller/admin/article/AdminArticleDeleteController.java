@@ -39,6 +39,7 @@ public class AdminArticleDeleteController extends HttpServlet {
 		
 		String message = "";
 		PrintWriter pw = response.getWriter();
+		String url = request.getContextPath()+"/admin/article";
 		try {
 			if("" == ids || ids == null) {
 				message = articleService.DeleteAllArticle(user.getId(),path);
@@ -51,12 +52,12 @@ public class AdminArticleDeleteController extends HttpServlet {
 					message = articleService.DeleteArticle(Integer.parseInt(ids),path);
 				}
 			}
-			String url = request.getContextPath()+"/admin/article";
-			pw.write("<html><body><script language='javascript'>alert("+message+");window.location.href='\"+url+\"';</script></body></html>");
+			
+			pw.write("<html><body><script language='javascript'>alert("+message+");window.location.href='"+url+"';</script></body></html>");
 			pw.close();
 		} catch (Exception e) {
 			// TODO: handle exception
-			pw.write("<html><body><script language='javascript'>alert('"+e.getMessage()+"');window.location.href='\"+url+\"';</script></body></html>");
+			pw.write("<html><body><script language='javascript'>alert('"+e.getMessage()+"');window.location.href='"+url+"';</script></body></html>");
 			return;
 		}
 	}

@@ -43,7 +43,7 @@
                      </li>
                      <!-- 退出 -->
                      <li class="am-text-sm">
-                         <a href="${pageContext.request.contextPath }/Login">
+                         <a href="${pageContext.request.contextPath }/login">
                              <span class="am-icon-sign-out"></span> 退出
                          </a>
                      </li>

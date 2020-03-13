@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.edu.tzc.blog.domain.ArticleInfo;
 import cn.edu.tzc.blog.domain.PhotoInfo;
 import cn.edu.tzc.blog.domain.User;
+import cn.edu.tzc.blog.service.AdminService;
 import cn.edu.tzc.blog.service.ArticleService;
 import cn.edu.tzc.blog.service.PhotoService;
 import cn.edu.tzc.blog.service.UserService;
@@ -23,6 +24,13 @@ public class AdminHomeController extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("user");
 		if(user == null) {
 			request.setAttribute("msg", "未登录");
+			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+			return;
+		}
+		AdminService adminService = new AdminService();
+		boolean isAdmin = adminService.isAdmin(user);
+		if(!isAdmin) {
+			request.setAttribute("msg", "不是管理员，不能登录！！！");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
 		}

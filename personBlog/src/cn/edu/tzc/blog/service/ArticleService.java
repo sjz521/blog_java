@@ -91,12 +91,20 @@ public class ArticleService extends FileHelper {
 	/**
 	 * 更新文章
 	 * @param article
+	 * @param imgPath	文章图片在.metadata文件夹里的路径
+	 * @param imgPublicPath	文章图片在public文件夹下的路径
+	 * @param contentPath	文章内容在.metadata文件夹里的路径
+	 * @param contentPublicPath	文章内容在public文件夹的路径
 	 */
-	public void updateArticle(Article article,String path,String publicPath) {
+	public void updateArticle(Article article,String imgPath,String imgPublicPath,String contentPath,String contentPublicPath) {
 		Article oldInfo = articleDao.FindById(article.getId());
 		if(article.getPhoto() != oldInfo.getPhoto()) {
-			delFile(path, oldInfo.getPhoto());
-			delFile(publicPath, oldInfo.getPhoto());
+			delFile(imgPath, oldInfo.getPhoto());
+			delFile(imgPublicPath, oldInfo.getPhoto());
+		}
+		if(!article.getContent().equals(oldInfo.getContent())) {
+			delFile(contentPath, oldInfo.getContent());
+			delFile(contentPublicPath, oldInfo.getContent());
 		}
 		articleDao.UpdateArticle(article);
 	}

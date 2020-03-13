@@ -8,9 +8,9 @@
                         <img src="${pageContext.request.contextPath }/public/images/headimg/${user.photo }" alt="">
                     </div>
                     <span class="user-panel-logged-in-text">
-              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
-                ${user.name }
-          </span>
+		              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+		                ${user.name }
+		          	</span>
                 </div>
             </div>
 
@@ -79,6 +79,12 @@
                 <li class="sidebar-nav-link">
                     <a href="${pageContext.request.contextPath }/admin/user" ${userClass }>
                         <i class="am-icon-user sidebar-nav-link-logo"></i> 用户管理
+                    </a>
+                </li>
+                
+                <li class="sidebar-nav-link">
+                    <a href="${pageContext.request.contextPath }/blog/home">
+                        <i class="am-icon-home sidebar-nav-link-logo"></i>博客首页
                     </a>
                 </li>
             </ul>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,17 +19,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/app.css">
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath }/ckeditor/ckeditor.js"></script>
     
-    <script type="text/javascript">
-    	window.onload = function(){
-    		CKEDITOR.replace('content');
-    	}
-    	
-    </script>
+    <!--  Editor css... -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/editor/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/editor/css/editormd.css">
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
     
-    
-
+    <script type="text/javascript">editormd.markdownToHTML("test-editormd",{emoji:true});</script>
 </head>
 
 <body data-type="index">
@@ -68,9 +64,9 @@
 		                    </div>
 		
 		                    <div class="widget-body am-fr">
-		                        <form class="am-form tpl-form-border-form tpl-form-border-br" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data">
+		                        <form name="mdEditorForm" class="am-form tpl-form-border-form tpl-form-border-br" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data">
 		                        	<input type="hidden" value="${article.id }" name="id">
-		                        
+		                        	<!-- 文章标题 -->
 		                            <div class="am-form-group">
 		                                <label for="user-name" class="am-u-sm-3 am-form-label">标题 
 		                                    <span class="tpl-form-line-small-title"></span>
@@ -80,7 +76,7 @@
 		                                    <small>请填写标题文字10-20字左右。</small>
 		                                </div>
 		                            </div>
-		
+		                            <!-- 作者 -->
 									<div class="am-form-group">
 		                                <label for="user-phone" class="am-u-sm-3 am-form-label">作者 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -89,7 +85,7 @@
 		                                    <small>作者不可变</small>
 		                                </div>
 		                            </div>
-		
+		                            <!-- 文章封面 -->
 		                            <div class="am-form-group">
 		                                <label for="user-weibo" class="am-u-sm-3 am-form-label">封面图 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -104,7 +100,7 @@
 		                                    </div>		
 		                                </div>
 		                            </div>
-		                            
+		                            <!-- 文章简介 -->
 									<div class="am-form-group">
 		                                <label for="user-phone" class="am-u-sm-3 am-form-label">文章简介 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -112,7 +108,7 @@
 		                                    <small>文章简介为必填</small>
 		                                </div>
 		                            </div>
-		
+		                            <!-- 标签的选择 -->
 		                            <div class="am-form-group">
 		                                <label for="user-phone" class="am-u-sm-3 am-form-label">标签 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -124,18 +120,23 @@
 		                                    <small>标签为必填</small>
 		                                </div>
 		                                <input type="hidden" name="select_value" id="select_value" value="${article.tid }"></input>
+		                                <input type="hidden" value="${article.content }" id="fileName" name="fileName">
 		                            </div>
-		
-		                            <div class="am-form-group">
+		                            <!-- 文章内容 -->
+		                             <div class="am-form-group">
 		                                <label for="user-intro" class="am-u-sm-3 am-form-label">文章内容</label>
 		                                <div class="am-u-sm-9">
-		                                    <textarea class="ckeditor" id="content" placeholder="请输入文章内容" name="content">${article.content }</textarea>                         
+		                                    <!--<textarea class="ckeditor" id="content" placeholder="请输入文章内容" name="content">${article.content }</textarea>-->
+		                                    <div id="test-editormd">
+		                                    	<!-- 书写与实时显示的textarea -->
+                                    			<textarea name="content" style="display:none;">${content }</textarea>       			
+                                    		</div>                        
 		                                </div>
-		                            </div>
+		                            </div> 
 		
 		                            <div class="am-form-group">
 		                                <div class="am-u-sm-9 am-u-sm-push-3">
-		                                    <input type="submit" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success ">
+		                                    <input type="submit" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success">
 		                                </div>
 		                            </div>
 		                        </form>
@@ -175,6 +176,29 @@
     <script src="${pageContext.request.contextPath}/public/assets/js/amazeui.datatables.min.js"></script>
     <script src="${pageContext.request.contextPath}/public/assets/js/dataTables.responsive.min.js"></script>
     <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
+    <!-- editor js -->
+    <script src="${pageContext.request.contextPath }/editor/js/editormd.min.js"></script>
+    <script src="${pageContext.request.contextPath }/editor/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    	var testEditor;
+    	$(function(){
+    		testEditor = editormd("test-editormd",{
+    			width : "98%",
+    			height:  640,
+    			syncScrolling: "single",
+    			path : "${pageContext.request.contextPath }/editor/lib/",//依赖lib文件夹路径
+    			emoji: true,
+    			taskList: true,
+    			tocm : true,
+    			imageUpload: true,//支持上传，需要plugins中的image-dialog.js插件支持
+    			imageFormats: ["jpg","jpeg","gif","png","bmp","webp"],//支持上传的图片类型
+    			imageUploadURL: "${pageContext.request.contextPath }/image/upload", //上传图片的后台服务器路径
+    			saveHTMLToTextarea:true,//构造的html代码直接在第二个隐藏的textarea域中，方便post提交
+    			toolbarAutoFixed:true,//工具栏自动固定定位的开启与禁用
+    		});
+    	});
+    </script>
+    
 </body>
 </html>
         
