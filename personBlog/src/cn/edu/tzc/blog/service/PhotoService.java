@@ -3,13 +3,13 @@ package cn.edu.tzc.blog.service;
 import java.util.List;
 
 import cn.edu.tzc.blog.dao.PhotoDao;
-import cn.edu.tzc.blog.domain.FileHelper;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.Photo;
 import cn.edu.tzc.blog.domain.PhotoInfo;
 import cn.edu.tzc.blog.service.exception.PhotoException;
+import cn.edu.tzc.blog.util.FileUtil;
 
-public class PhotoService extends FileHelper {
+public class PhotoService extends FileUtil {
 	private PhotoDao photoDao = new PhotoDao();
 	
 	public List<Photo> showAll(int uId) {

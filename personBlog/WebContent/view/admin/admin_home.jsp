@@ -56,7 +56,7 @@
 
                         <div class="widget am-cf widget-body-lg">
 
-                            <div class="widget-body  am-fr">
+                            <div class="widget-body am-fr">
                                 <div class="am-scrollable-horizontal ">
                                     <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
                                         <thead>

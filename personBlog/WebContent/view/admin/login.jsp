@@ -20,6 +20,32 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/app.css">
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/jquery.md5.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+    	function _change(){
+    		var imgEle = document.getElementById("verifyImg");
+    		imgEle.src = "/personBlog/VerifyCodeServlet?a=" + new Date().getTime();
+    	}
+    	
+    	/*function encrytPassword(password){
+    		var pwd = $.md5(password);
+    		alert(pwd);
+    		document.getElementById("password").value = pwd.substring(22,32);
+    	}*/
+    	
+    	$(document).ready(function(){
+    		$("#password").blur(function(){
+        		var password = $(this).val();
+        		var pwd = $.md5(password);
+        		alert(pwd);
+        		$(this).val(pwd);
+        	});
+    	});
+    	
+    </script>
     
 </head>
 
@@ -52,8 +78,8 @@
                     </div>
 
                     <div class="am-form-group">
-                        <input type="password" class="tpl-form-input" id="user-name" name="password" 
-                        value="${cookie.password.value }" placeholder="请输入密码">
+                        <input type="password" class="tpl-form-input" id="password" name="password" 
+                        	value="${cookie.password.value }" placeholder="请输入密码"><!--  onblur="encrytPassword(this);" -->
                     </div>
                     
                     <div class="am-form-group">
@@ -69,9 +95,7 @@
 
                     </div>
                     <div class="am-form-group">
-
                         <button type="submit" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">登录</button>
-
                     </div>                    
                 </form>
                 <form action="${pageContext.request.contextPath}/register" method="GET">
@@ -83,15 +107,6 @@
             </div>
         </div>
     </div>
-    <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
-    <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
-    <script type="text/javascript">
-    	function _change(){
-    		var imgEle = document.getElementById("verifyImg");
-    		imgEle.src = "/personBlog/VerifyCodeServlet?a=" + new Date().getTime();
-    	}
-    </script>
-
 </body>
 
 </html>

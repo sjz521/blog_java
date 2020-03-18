@@ -13,11 +13,11 @@ import cn.edu.tzc.blog.dao.ArticleDao;
 import cn.edu.tzc.blog.dao.UserDao;
 import cn.edu.tzc.blog.domain.Article;
 import cn.edu.tzc.blog.domain.ArticleInfo;
-import cn.edu.tzc.blog.domain.FileHelper;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.service.exception.ArticleException;
+import cn.edu.tzc.blog.util.FileUtil;
 
-public class ArticleService extends FileHelper {
+public class ArticleService extends FileUtil {
 	private ArticleDao articleDao = new ArticleDao();
 	
 	/**

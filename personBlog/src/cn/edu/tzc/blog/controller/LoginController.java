@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.UserService;
 import cn.edu.tzc.blog.service.exception.UserException;
+import cn.edu.tzc.blog.util.MD5Util;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {

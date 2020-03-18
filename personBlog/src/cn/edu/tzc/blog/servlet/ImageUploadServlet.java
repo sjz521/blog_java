@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import cn.edu.tzc.blog.domain.FileHelper;
+import cn.edu.tzc.blog.util.FileUtil;
 import net.sf.json.JSONObject;
 
 /**
@@ -58,7 +58,7 @@ public class ImageUploadServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utr-8");
 		
-		FileHelper helper = new FileHelper();
+		FileUtil helper = new FileUtil();
 		String savePath = request.getServletContext().getRealPath("/upload");
 		File pathFolder = new File(savePath);
 		if(!pathFolder.exists()) {

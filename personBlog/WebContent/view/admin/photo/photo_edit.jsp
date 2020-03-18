@@ -20,6 +20,7 @@
 		href="${pageContext.request.contextPath}/public/assets/css/amazeui.datatables.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/app.css">
 	<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+	
 </head>
 
 <body data-type="widgets">
@@ -55,9 +56,9 @@
 		                        </div>
 		                    </div>
 		
-		                    <div class="widget-body am-fr">
+		                    <div class="widget-body am-fr form-left-father">
 		                        <form class="am-form tpl-form-border-form tpl-form-border-br" action="${pageContext.request.contextPath}/admin/photo/edit" method="post" enctype="multipart/form-data">
-		
+		                        	<!-- 作者 -->
 									<div class="am-form-group">
 		                                <label for="user-phone" class="am-u-sm-3 am-form-label">作者 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -66,7 +67,7 @@
 		                                    <small>作者不可变</small>
 		                                </div>
 		                            </div>
-		
+		                            <!-- 图片 -->
 		                            <div class="am-form-group">
 		                                <label for="user-weibo" class="am-u-sm-3 am-form-label">图片 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
@@ -82,19 +83,20 @@
 		
 		                                </div>
 		                            </div>
-		                            
+		                            <!-- 图片名称 -->
 		                            <div class="am-form-group">
 		                                <label for="user-phone" class="am-u-sm-3 am-form-label">图片名称 <span class="tpl-form-line-small-title"></span></label>
 		                                <div class="am-u-sm-9">
 		                                     <input type="text" class="tpl-form-input" id="photoName" value="${photo.name }" name="photoName" placeholder="图片名称">
 		                                </div>
 		                            </div>
-		
+		                            <!-- 按钮 -->
 		                            <div class="am-form-group">
 		                                <div class="am-u-sm-9 am-u-sm-push-3">
 		                                    <input type="submit" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success ">
 		                                </div>
 		                            </div>
+
 		                        </form>
 						        <script type="text/javascript">
 						            function changepic(obj){

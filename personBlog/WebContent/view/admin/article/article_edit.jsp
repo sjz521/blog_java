@@ -26,6 +26,14 @@
     <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
     
     <script type="text/javascript">editormd.markdownToHTML("test-editormd",{emoji:true});</script>
+    
+    <style type="text/css">
+		.form-left{
+			position:relative;
+			left:-210px;
+		}
+	</style>
+    
 </head>
 
 <body data-type="index">
@@ -64,7 +72,7 @@
 		                    </div>
 		
 		                    <div class="widget-body am-fr">
-		                        <form name="mdEditorForm" class="am-form tpl-form-border-form tpl-form-border-br" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data">
+		                        <form name="mdEditorForm" class="am-form tpl-form-border-form tpl-form-border-br form-left" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data">
 		                        	<input type="hidden" value="${article.id }" name="id">
 		                        	<!-- 文章标题 -->
 		                            <div class="am-form-group">

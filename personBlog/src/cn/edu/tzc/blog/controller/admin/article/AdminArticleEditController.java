@@ -34,12 +34,12 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import cn.edu.tzc.blog.domain.Article;
 import cn.edu.tzc.blog.domain.ArticleInfo;
-import cn.edu.tzc.blog.domain.FileHelper;
 import cn.edu.tzc.blog.domain.Type;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.ArticleService;
 import cn.edu.tzc.blog.service.TypeService;
 import cn.edu.tzc.blog.service.exception.TypeException;
+import cn.edu.tzc.blog.util.FileUtil;
 
 /**
  * Servlet implementation class AdminArticleEdit
@@ -158,13 +158,13 @@ public class AdminArticleEditController extends HttpServlet {
 				}
 				form.setPhoto(fileName);
 			}
-			else if(""!=ids && ids!=null) {
+			else if(!"".equals(ids) && ids!=null) {
 				//当用户未选择上传图片且文章为修改状态时，文章的图片保持不变
 				Article article = articleService.findById(Integer.parseInt(ids));
 				form.setPhoto(article.getPhoto());
 			}
 			
-			if(""!=ids && ids!=null) {
+			if(!"".equals(ids) && ids!=null) {
 				//当文章为修改时
 				String tmpStr = fileItem.getString("utf-8");
 				//如果文章内容的文件名称存在且以md后缀结尾保存，则文件名不重置，否则文件名重置
@@ -225,7 +225,7 @@ public class AdminArticleEditController extends HttpServlet {
 	 */
 	private String getContent(String articleContent,String filePath) {
 		String content = "";
-		FileHelper helper = new FileHelper();
+		FileUtil helper = new FileUtil();
 		if(articleContent.endsWith(".md")) {
 			filePath += File.separator+articleContent;
 			content = helper.readFile(filePath);

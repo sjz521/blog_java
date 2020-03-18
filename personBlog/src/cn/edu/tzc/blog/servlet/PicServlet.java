@@ -11,7 +11,7 @@ import com.jspsmart.upload.File;
 import com.jspsmart.upload.SmartUpload;
 import com.jspsmart.upload.SmartUploadException;
 
-import cn.edu.tzc.blog.domain.FileHelper;
+import cn.edu.tzc.blog.util.FileUtil;
 
 /**
  * Servlet implementation class PicServlet
@@ -50,7 +50,7 @@ public class PicServlet extends HttpServlet {
 			filePath.mkdirs();//创建文件目录
 		}
 		
-		FileHelper helper = new FileHelper();
+		FileUtil helper = new FileUtil();
 		String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
 		//upload文件夹在src下的WebContent里的路径
 		String publicPath = helper.getFilePath(rootPath, projectName);

@@ -10,8 +10,9 @@ import cn.edu.tzc.blog.dao.UserDao;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.exception.UserException;
+import cn.edu.tzc.blog.util.FileUtil;
 
-public class UserService {
+public class UserService extends FileUtil {
 	//把具体的实现类的创建，隐藏到工厂
 	//private UserDao userDao = new UserDao();
 	private UserDao userDao = new UserDao();

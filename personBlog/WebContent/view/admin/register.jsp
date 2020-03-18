@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="am-form-group">
-                        <input type="password" class="tpl-form-input" id="password" name="password" placeholder="请输入密码">
+                        <input type="password" class="tpl-form-input" id="password" name="password" placeholder="请输入密码" onblur="encrytPassword()">
                     </div>
 
                     <div class="am-form-group">
@@ -74,6 +74,7 @@
     </div>
     <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
     <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/jquery.md5.js"></script>
     <script type="text/javascript">
          function check(){
 
@@ -105,6 +106,13 @@
                 return false;
              }
          }
+         
+         function encrytPassword(){
+     		var password = document.getElementById("password").value;
+     		var hash = $.md5(password);
+     		document.getElementById("password").value = hash.substring(22,32);
+     	}
+         
     </script>
 
 </body>

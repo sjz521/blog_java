@@ -92,17 +92,24 @@ public class AdminPersonDataController extends HttpServlet {
 				user.setIntroduction(introduction);
 				
 				if(photo!=null) {
-					String path = this.getServletContext().getRealPath("/WebContent/public/images/photos");
+					String path = this.getServletContext().getRealPath("/public/images/headimg");
+					service.judgeFile(path);
 					String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
-					int beginIndex = path.indexOf(projectName);
-					int endIndex = path.lastIndexOf(projectName);
-					String filePath = path.substring(0, beginIndex+projectName.length()+1)+path.substring(endIndex);
+					String filePath = service.getFilePath(path, projectName);
 					
-					String fileName = uploadPhoto(photo, filePath);
+					//String fileName = uploadPhoto(photo, filePath);
+					String fileName = service.uploadFile(photo, path);
+					service.uploadFile(photo, filePath,fileName);
+					String oldPhoto = user.getPhoto();
+					if(oldPhoto!=null && !"".equals(oldPhoto)) {
+						service.delFile(path, oldPhoto);
+						service.delFile(filePath, oldPhoto);
+					}
 					user.setPhoto(fileName);
 				}
 				String message = service.updateUser(user);
 				request.setAttribute("message", message);
+				request.getSession().setAttribute("user", user);
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.edu.tzc.blog.domain.FileHelper;
+import cn.edu.tzc.blog.util.FileUtil;
 
 /**
  * Servlet implementation class ImageShowServlet

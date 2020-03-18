@@ -33,9 +33,7 @@ public class AdminArticleDeleteController extends HttpServlet {
 		//文件路径
 		String path = this.getServletContext().getRealPath("/WebContent/public/images/photos");
 		String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
-		int beginIndex = path.indexOf(projectName);
-		int endIndex = path.lastIndexOf(projectName);
-		String filePath = path.substring(0, beginIndex+projectName.length()+1)+path.substring(endIndex);
+		String filePath = articleService.getFilePath(path, projectName);
 		
 		String message = "";
 		PrintWriter pw = response.getWriter();
@@ -52,12 +50,11 @@ public class AdminArticleDeleteController extends HttpServlet {
 					message = articleService.DeleteArticle(Integer.parseInt(ids),path);
 				}
 			}
-			
-			pw.write("<html><body><script language='javascript'>alert("+message+");window.location.href='"+url+"';</script></body></html>");
+			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 			pw.close();
 		} catch (Exception e) {
 			// TODO: handle exception
-			pw.write("<html><body><script language='javascript'>alert('"+e.getMessage()+"');window.location.href='"+url+"';</script></body></html>");
+			pw.println("<html><body><script language='javascript'>alert('"+e.getMessage()+"');window.location.href='"+url+"';</script></body></html>");
 			return;
 		}
 	}
