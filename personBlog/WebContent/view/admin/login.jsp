@@ -22,7 +22,7 @@
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
     <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
     <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
-    <script src="${pageContext.request.contextPath}/public/assets/js/jquery.md5.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/md5_2.js" type="text/javascript"></script>
     <script src="${pageContext.request.contextPath}/public/assets/js/jquery.min.js"></script>
     <script type="text/javascript">
     	function _change(){
@@ -30,20 +30,21 @@
     		imgEle.src = "/personBlog/VerifyCodeServlet?a=" + new Date().getTime();
     	}
     	
-    	/*function encrytPassword(password){
-    		var pwd = $.md5(password);
-    		alert(pwd);
-    		document.getElementById("password").value = pwd.substring(22,32);
-    	}*/
+    	function encrytPassword(){
+    		var password = document.getElementById("password").value;
+    		//alert(password);
+    		var pwd = hex_md5(password);
+    		document.getElementById("password").value = pwd;
+    	}
     	
-    	$(document).ready(function(){
+    	/*$(document).ready(function(){
     		$("#password").blur(function(){
         		var password = $(this).val();
         		var pwd = $.md5(password);
         		alert(pwd);
         		$(this).val(pwd);
         	});
-    	});
+    	});*/
     	
     </script>
     
@@ -79,7 +80,7 @@
 
                     <div class="am-form-group">
                         <input type="password" class="tpl-form-input" id="password" name="password" 
-                        	value="${cookie.password.value }" placeholder="请输入密码"><!--  onblur="encrytPassword(this);" -->
+                        	value="${cookie.password.value }" placeholder="请输入密码" onblur="encrytPassword();"><!--  onblur="encrytPassword(this);" -->
                     </div>
                     
                     <div class="am-form-group">

@@ -18,7 +18,41 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/app.css">
     <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
+    <script type="text/javascript">
+         function check(){
 
+             if(myform.email.value==""){
+                 alert("请输入邮箱");
+                 myform.email.focus();
+                 return false;
+             }
+             if(myform.username.value==""){
+                 alert("请输入用户名");
+                 myform.username.focus();
+                 return false;
+             }
+             if (myform.password.value==""){
+                 alert("请输入密码");
+                 myform.password.focus();
+                 return false;
+             }
+             if (myform.repassword.value==""){
+                 alert("请再次输入密码");
+                 myform.repassword.focus();
+                 return false;
+             }
+             if (myform.password.value!=myform.repassword.value) {
+                alert("两次输入密码不同，请重新输入！");
+                myform.password.value="";
+                myform.repassword.value="";
+                myform.password.focus();
+                return false;
+             }
+         }     
+         
+    </script>
     
 
 </head>
@@ -58,7 +92,7 @@
                     </div>
 
                     <div class="am-form-group">
-                        <input type="password" class="tpl-form-input" id="password" name="password" placeholder="请输入密码" onblur="encrytPassword()">
+                        <input type="password" class="tpl-form-input" id="password" name="password" placeholder="请输入密码">
                     </div>
 
                     <div class="am-form-group">
@@ -72,48 +106,6 @@
             </div>
         </div>
     </div>
-    <script src="http://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
-    <script src="${pageContext.request.contextPath}/public/assets/js/app.js"></script>
-    <script src="${pageContext.request.contextPath}/public/assets/js/jquery.md5.js"></script>
-    <script type="text/javascript">
-         function check(){
-
-             if(myform.email.value==""){
-                 alert("请输入邮箱");
-                 myform.email.focus();
-                 return false;
-             }
-             if(myform.username.value==""){
-                 alert("请输入用户名");
-                 myform.username.focus();
-                 return false;
-             }
-             if (myform.password.value==""){
-                 alert("请输入密码");
-                 myform.password.focus();
-                 return false;
-             }
-             if (myform.repassword.value==""){
-                 alert("请再次输入密码");
-                 myform.repassword.focus();
-                 return false;
-             }
-             if (myform.password.value!=myform.repassword.value) {
-                alert("两次输入密码不同，请重新输入！");
-                myform.password.value="";
-                myform.repassword.value="";
-                myform.password.focus();
-                return false;
-             }
-         }
-         
-         function encrytPassword(){
-     		var password = document.getElementById("password").value;
-     		var hash = $.md5(password);
-     		document.getElementById("password").value = hash.substring(22,32);
-     	}
-         
-    </script>
 
 </body>
 </html>

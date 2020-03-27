@@ -18,7 +18,9 @@
 	    <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/amazeui.min.css" />
 	    <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/amazeui.datatables.min.css" />
 	    <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/css/app.css">
+	    <script src="${pageContext.request.contextPath}/public/assets/js/md5_2.js" type="text/javascript"></script>
 	    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+	    
 	    
 	    <script type="text/javascript">
 	    
@@ -45,6 +47,7 @@
             		$("#tishi1").html("原始密码不能为空");
             		$("#tishi1").css("color","red");
             		$("#submit").attr("disabled","disabled");
+            		//return;
             	}
             	var pwd = $("#newPassword").val();
             	var pwd1 = $("#confirmPassword").val();
@@ -60,21 +63,33 @@
             	}
             }
             
-            function checkOldPassword(obj){
+            function check(){
+            	var obj = $("#password").val();
             	var password = $("#oldPassword").val();
             	if(password==""){
             		$("#tishi1").html("原始密码不能为空");
             		$("#tishi1").css("color","red");
             		$("#submit").attr("disabled","disabled");
-            	}else{
+            		$("#newPassword").attr("disabled","disabled");
+            		$("#confirmPassword").attr("disabled","disabled");
+            	}
+            	else{
+            		var pwd = hex_md5(password);
+                	$("#oldPassword").val(pwd);
+                	password = pwd;
+                	
             		if(password != obj){
             			$("#tishi1").html("原始密码错误");
                 		$("#tishi1").css("color","red");
                 		$("#submit").attr("disabled","disabled");
+                		$("#newPassword").attr("disabled","disabled");
+                		$("#confirmPassword").attr("disabled","disabled");
             		}else{
             			$("#tishi1").html("原始密码正确");
                 		$("#tishi1").css("color","green");
                 		$("#submit").removeAttr("disabled");
+                		$("#newPassword").removeAttr("disabled");
+                		$("#confirmPassword").removeAttr("disabled");
             		}
             	}
             }
@@ -123,7 +138,8 @@
 			                        <form class="am-form tpl-form-border-form tpl-form-border-br" name="from1"
 			                        action="${pageContext.request.contextPath}/admin/person?method=password" method="post">
 			                        	<input type="hidden" value="${user.id }" name="id">
-			
+			                        	<input type="hidden" value="${user.password }" name="password" id="password">
+			                        	<!-- 邮箱 -->
 			                            <div class="am-form-group">
 			                                <label for="user-name" class="am-u-sm-3 am-form-label">邮箱 
 			                                    <span class="tpl-form-line-small-title"></span>
@@ -132,11 +148,11 @@
 			                                    <input type="email" class="tpl-form-input" id="user-name" value="${user.email }" name="email" placeholder="" readonly="true">
 			                                </div>
 			                            </div>
-			                            
+			                            <!-- 原始密码 -->
 			                            <div class="am-form-group">
 			                                <label for="user-phone" class="am-u-sm-3 am-form-label">请输入原始密码 <span class="tpl-form-line-small-title"></span></label>
 			                                <div class="am-u-sm-9">
-			                                     <input type="password" class="tpl-form-input" id="oldPassword" value="" name="oldPassword" placeholder="密码" onkeyup="checkOldPassword(${user.password})">
+			                                     <input type="password" class="tpl-form-input" id="oldPassword" value="" name="oldPassword" placeholder="原始密码" onblur="check();">
 			                                     <span id="tishi1"></span>
 			                                </div>
 			                            </div>

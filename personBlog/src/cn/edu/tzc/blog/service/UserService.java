@@ -11,11 +11,13 @@ import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.exception.UserException;
 import cn.edu.tzc.blog.util.FileUtil;
+import cn.edu.tzc.blog.util.MD5Util;
 
 public class UserService extends FileUtil {
 	//把具体的实现类的创建，隐藏到工厂
 	//private UserDao userDao = new UserDao();
 	private UserDao userDao = new UserDao();
+	private MD5Util md5Util = new MD5Util();
 	
 	/**
 	 * 按邮箱查找用户
@@ -55,6 +57,7 @@ public class UserService extends FileUtil {
 	 */
 	public User login(String email,String password) throws UserException {
 		User user = userDao.findByEmail(email);
+		user.setPassword(md5Util.getMD5String(user.getPassword()));
 		if(!user.getPassword().equals(password)) {
 			throw new UserException("密码错误！！！");
 		}

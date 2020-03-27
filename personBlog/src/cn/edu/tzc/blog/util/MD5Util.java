@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
 	
-	public synchronized static final String getMD5String(String str) {
+	public String getMD5String(String str) {
 		if(null == str) {
 			return "";
 		}
