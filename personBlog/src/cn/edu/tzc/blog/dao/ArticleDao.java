@@ -23,7 +23,7 @@ public class ArticleDao {
 	 * @param uid
 	 * @return
 	 */
-	public List<ArticleInfo> GetAll(int uid){
+	public List<ArticleInfo> getAll(int uid){
 		List<ArticleInfo> articles = new ArrayList<>();
 		Connection connection =  DBUtil.getConnection();
 		try {
@@ -60,7 +60,7 @@ public class ArticleDao {
 	 * @param id
 	 * @return
 	 */
-	public ArticleInfo FindById(int id) {
+	public ArticleInfo findById(int id) {
 		Connection connection = DBUtil.getConnection();
 		ArticleInfo articleInfo = new ArticleInfo();
 		try {
@@ -94,7 +94,7 @@ public class ArticleDao {
 	 * @param uId
 	 * @return
 	 */
-	public int GetToal(int uId) {
+	public int getToal(int uId) {
 		int num = 0;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -120,7 +120,7 @@ public class ArticleDao {
 	 * @param uId
 	 * @return
 	 */
-	public List<ArticleInfo> GetArticlePage(int pageIndex,int pageSize,int uId){
+	public List<ArticleInfo> getArticlePage(int pageIndex,int pageSize,int uId){
 		List<ArticleInfo> articles = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -156,7 +156,8 @@ public class ArticleDao {
 	 * 添加文章
 	 * @param article
 	 */
-	public void AddArticle(Article article) {
+	public boolean addArticle(Article article) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("insert into article(title,introduction,content,created_at,photo,uid,tid) values(?,?,?,?,?,?,?)");
@@ -168,19 +169,22 @@ public class ArticleDao {
 			prep.setInt(6, article.getUid());
 			prep.setInt(7, article.getTid());
 			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
 		}
+		return result;
 	}
 	
 	/**
 	 * 修改文章
 	 * @param article
 	 */
-	public void UpdateArticle(Article article) {
+	public boolean updateArticle(Article article) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("update article set title=?,introduction=?,content=?,photo=?,tid=? where id=?");
@@ -191,12 +195,14 @@ public class ArticleDao {
 			prep.setInt(5, article.getTid());
 			prep.setInt(6, article.getId());
 			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
-		}	
+		}
+		return result;
 	}
 	
 	/**
@@ -204,7 +210,7 @@ public class ArticleDao {
 	 * @param id
 	 * @return
 	 */
-	public boolean Delete(int id) {
+	public boolean deleteArticle(int id) {
 		boolean result = true;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -226,7 +232,7 @@ public class ArticleDao {
 	 * @param uId
 	 * @return
 	 */
-	public boolean DeleteAll(int uId) {
+	public boolean deleteAll(int uId) {
 		Connection connection = DBUtil.getConnection();
 		boolean result = true;
 		try {
@@ -248,7 +254,7 @@ public class ArticleDao {
 	 * @param ids
 	 * @return
 	 */
-	public boolean DeleteCheck(String[] ids) {
+	public boolean deleteArticles(String[] ids) {
 		//根据id数量组成SQL语句
 		StringBuilder sb = new StringBuilder();
 		sb.append("delete from article where id in (");
@@ -318,7 +324,7 @@ public class ArticleDao {
 	 * @param tId
 	 * @return
 	 */
-	public List<ArticleInfo> GetArticleByTid(int pageIndex,int pageSize,int uId,int tId){
+	public List<ArticleInfo> getArticleByTid(int pageIndex,int pageSize,int uId,int tId){
 		List<ArticleInfo> articles = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {

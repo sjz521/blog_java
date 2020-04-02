@@ -22,7 +22,7 @@ public class AdminHomeController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			request.setAttribute("msg", "未登录");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
@@ -33,7 +33,7 @@ public class AdminHomeController extends HttpServlet {
 			request.setAttribute("msg", "不是管理员，不能登录！！！");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
-		}
+		}*/
 		
 		ArticleService articleService = new ArticleService();
 		PhotoService photoService = new PhotoService();

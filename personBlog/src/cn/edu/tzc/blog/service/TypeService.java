@@ -18,7 +18,7 @@ public class TypeService {
 	 * @throws TypeException
 	 */
 	public List<Type> showAllTypes(){
-		return typeDao.showAllTypes();
+		return typeDao.getAll();
 	}
 	
 	/**
@@ -44,8 +44,19 @@ public class TypeService {
 	 * @param type
 	 * @return
 	 */
-	public boolean addType(Type type) {
+	/*public boolean addType(Type type) {
 		return typeDao.addType(type);
+	}*/
+	public String addType(Type type) {
+		boolean result = typeDao.addType(type);
+		String message = "";
+		if(result) {
+			message = "添加分类成功";
+		}
+		else {
+			message = "添加分类失败";
+		}
+		return message;
 	}
 	
 	/**
@@ -69,8 +80,15 @@ public class TypeService {
 	 * 删除所有分类
 	 * @return
 	 */
-	public boolean deleteAll() {
-		return typeDao.deleteAll();
+	public String deleteAll() {
+		boolean result = typeDao.deleteAll();
+		String message = "";
+		if(result) {
+			message = "全部分类删除成功";
+		}else {
+			message = "全部分类删除失败";
+		}
+		return message;
 	}
 	
 	public Type getTypeById(int id) throws TypeException {
@@ -102,7 +120,7 @@ public class TypeService {
 	 * @return
 	 */
 	public String delChecked(String[] ids) {
-		boolean result = typeDao.deleteChecked(ids);
+		boolean result = typeDao.deleteTypes(ids);
 		if(result) {
 			return "删除成功";
 		}

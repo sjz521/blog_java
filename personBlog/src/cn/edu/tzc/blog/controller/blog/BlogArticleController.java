@@ -33,14 +33,14 @@ public class BlogArticleController extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		
 		User user = (User)request.getSession().getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			String url = request.getContextPath()+"/login";
 			pw.println("<html><body><script language='javascript'>alert('登录后才能阅读文章，请先登录');window.location.href='"+url+"';</script></body></html>");
 			pw.close();
 			return;
-		}
-		String title = user.getName()+"/退出登录";
-		request.setAttribute("title", title);
+		}*/
+		/*String title = user.getName()+"/退出登录";
+		request.setAttribute("title", title);*/
 		String idString = request.getParameter("id");
 		int id = 0;
 		if(idString!=null && idString!="") {
@@ -56,12 +56,12 @@ public class BlogArticleController extends HttpServlet {
 		TypeService typeService = new TypeService();
 		MessageService messageService = new MessageService();
 		
-		List<Type> types = new ArrayList<>();
+		//List<Type> types = new ArrayList<>();
 		try {
 			ArticleInfo articleInfo = articleService.findById(id);
 			request.setAttribute("articleInfo", articleInfo);
-			types = typeService.showAllTypes();
-			request.setAttribute("types", types);
+			//types = typeService.showAllTypes();
+			//request.setAttribute("types", types);
 			
 			int pageIndex = 0;
 			String str = request.getParameter("pageIndex");

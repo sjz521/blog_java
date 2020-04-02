@@ -19,25 +19,7 @@
 <body>
 
 <div class="main">
-	<div class="header">
-	    <div class="header_resize">
-	      <div class="menu_nav">
-	        <ul>
-	          <li><a href="${pageContext.request.contextPath}/blog/home">博客首页</a></li>
-	          <li class="active"><a href="${pageContext.request.contextPath}/blog/photo">相册</a></li>
-	          <li><a href="${pageContext.request.contextPath}/blog/aboutMe">关于我</a></li>
-	     	  <li><a href="${pageContext.request.contextPath}/login">${title }</a></li>
-	        </ul>
-	      </div>
-	      <div class="clr"></div>
-	      <div class="logo" style="height: 220px;"></div>
-	      <div class="clr"></div>
-	    </div>
-	</div> 
-	<br>
-	<br>
-	<br>
-	<br>
+	<jsp:include page="layout/top_bar.jsp"></jsp:include>
 	<div class="content">
 		<div class="content_resize">
 			<div class="mainbar">
@@ -99,36 +81,7 @@
 		        </div>
 		    
 			</div>
-			<div class="sidebar">
-
-					<div class="gadget">
-						<h2 class="star"><span></span> Type</h2>
-						<div class="clr"></div>
-						<ul class="sb_menu">
-							<c:forEach items="${types }" var="type">
-								<li>
-									<a href="">${type.name }</a>
-								</li>
-							</c:forEach>
-						</ul>
-					</div>
-					
-					<div class="gadget">
-						<h2 class="star"><span>Blog_</span> Menu</h2>
-						<div class="clr"></div>
-						<ul class="sb_menu">
-							<jsp:include page="menu/header2.jsp"></jsp:include>
-						</ul>
-					</div>
-					<div class="gadget">
-						<h2 class="star"><span>Introduce</span></h2>
-						<div class="clr"></div>
-						<ul class="ex_menu">
-							<jsp:include page="menu/professional_menu.jsp"></jsp:include>
-						</ul>
-					</div>
-				</div>
-				<div class="clr"></div>
+			<jsp:include page="layout/right_bar.jsp"></jsp:include>
 		</div>
 	</div>
 </body>

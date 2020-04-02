@@ -40,12 +40,18 @@ public class UserService extends FileUtil {
 	 * @param password
 	 * @throws UserException
 	 */
-	public void register(String email,String username,String password) throws UserException {
+	public String register(String email,String username,String password) throws UserException {
 		//1.使用email邮箱去查询
 		User user = userDao.findByEmail(email);
 		if(user != null) throw new UserException("邮箱"+email+"已被注册过了!");
 		//2.用户注册
-		userDao.AddUser(email, username, password);
+		boolean result = userDao.addUser(email, username, password);
+		if(result) {
+			return "注册成功";
+		}
+		else {
+			return "注册失败";
+		}
 	}
 	
 	/**
@@ -61,7 +67,7 @@ public class UserService extends FileUtil {
 		if(!user.getPassword().equals(password)) {
 			throw new UserException("密码错误！！！");
 		}
-		userDao.UpdateUserLoginTime(user.getId());
+		userDao.updateUserLoginTime(user.getId());
 		return user;
 	}
 	
@@ -71,7 +77,7 @@ public class UserService extends FileUtil {
 	 */
 	public String updateUser(User user) {
 		//User oldUser =  userDao.findByEmail(user.getEmail());
-		boolean result = userDao.UpdateUser(user);
+		boolean result = userDao.updateUser(user);
 		if(result) {
 			return "修改成功";
 		}else {
@@ -84,7 +90,7 @@ public class UserService extends FileUtil {
 	 * @param email
 	 * @return
 	 */
-	public User GetUserByEmail(String email) {
+	public User getUserByEmail(String email) {
 		return userDao.findByEmail(email);
 	}
 	
@@ -92,16 +98,16 @@ public class UserService extends FileUtil {
 	 * 获得除博主外的所有用户
 	 * @return
 	 */
-	public List<User> GetAllUser(){
-		return userDao.GetAllUser();
+	public List<User> getAllUser(){
+		return userDao.getAllUser();
 	}
 	
 	/**
 	 * 获得除博主外的用户个数
 	 * @return
 	 */
-	public int GetTotal() {
-		return userDao.GetTotal();
+	public int getTotal() {
+		return userDao.getTotal();
 	}
 	
 	/**
@@ -110,8 +116,8 @@ public class UserService extends FileUtil {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<User> GetUserPage(int pageIndex,int pageSize){
-		return userDao.GetUsersPage(pageIndex, pageSize);
+	public List<User> getUserPage(int pageIndex,int pageSize){
+		return userDao.getUsersPage(pageIndex, pageSize);
 	}
 	
 	/**
@@ -121,9 +127,9 @@ public class UserService extends FileUtil {
 	 * @return
 	 */
 	public Page<User> findUserWithPage(int pageIndex,int pageSize){
-		int totalRecord = userDao.GetTotal();
+		int totalRecord = userDao.getTotal();
 		Page<User> page = new Page<>(pageIndex, pageSize, totalRecord);
-		List<User> list = userDao.GetUsersPage(pageIndex, pageSize);
+		List<User> list = userDao.getUsersPage(pageIndex, pageSize);
 		page.setList(list);
 		return page;
 	}

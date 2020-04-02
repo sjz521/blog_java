@@ -52,11 +52,11 @@ public class AdminArticleEditController extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			request.setAttribute("msg", "未登录");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
-		}
+		}*/
 		
 		ArticleService articleService = new ArticleService();
 		TypeService typeService = new TypeService();
@@ -196,13 +196,11 @@ public class AdminArticleEditController extends HttpServlet {
 			//form.setContent(content);
 			
 			if(ids == null || ids.length() == 0) {
-				articleService.addArticle(form);
-				message = "文章添加成功";
+				message = articleService.addArticle(form);
 			}else {
 				
 				form.setId(Integer.parseInt(ids));
-				articleService.updateArticle(form,imgPath,imgPublicPath,contentPath,contentPublicPath);
-				message = "文章修改成功";
+				message = articleService.updateArticle(form,imgPath,imgPublicPath,contentPath,contentPublicPath);
 			} 
 			
 		} catch (Exception e) {

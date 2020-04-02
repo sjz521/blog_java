@@ -20,7 +20,7 @@ public class MessageDao {
 	 * 获得所有留言
 	 * @return
 	 */
-	public List<MessageInfo> GetAllReply(){
+	public List<MessageInfo> getAllMessage(){
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -51,7 +51,7 @@ public class MessageDao {
 	 * @param aId
 	 * @return
 	 */
-	public List<MessageInfo> GetArticleReply(int aId){
+	public List<MessageInfo> getMessageByAId(int aId){
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -82,7 +82,7 @@ public class MessageDao {
 	 * 添加留言
 	 * @param message
 	 */
-	public boolean AddReply(Message message) {
+	public boolean addMessage(Message message) {
 		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -107,7 +107,7 @@ public class MessageDao {
 	 * @param id
 	 * @return
 	 */
-	public boolean DeleteMessage(int id) {
+	public boolean deleteMessage(int id) {
 		boolean result = true;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -127,7 +127,7 @@ public class MessageDao {
 	 * 删除全部留言
 	 * @return
 	 */
-	public boolean DeleteAllMessage() {
+	public boolean deleteAllMessage() {
 		boolean result = true;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -147,7 +147,7 @@ public class MessageDao {
 	 * @param ids
 	 * @return
 	 */
-	public boolean DeleteChecked(String[] ids) {
+	public boolean deleteMessages(String[] ids) {
 		boolean result = false;
 		
 		//1.处理sql语句
@@ -189,7 +189,7 @@ public class MessageDao {
 	 * 获得留言数
 	 * @return
 	 */
-	public int GetTotal() {
+	public int getTotal() {
 		Connection connection = DBUtil.getConnection();
 		int num = 0;
 		try {
@@ -210,7 +210,7 @@ public class MessageDao {
 	 * @param aId
 	 * @return
 	 */
-	public int GetTotal(int aId) {
+	public int getTotal(int aId) {
 		Connection connection = DBUtil.getConnection();
 		int num = 0;
 		try {
@@ -233,7 +233,7 @@ public class MessageDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<MessageInfo> GetMessagesPage(int pageIndex,int pageSize){
+	public List<MessageInfo> getMessagesPage(int pageIndex,int pageSize){
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -270,7 +270,7 @@ public class MessageDao {
 	 * @param aId
 	 * @return
 	 */
-	public List<MessageInfo> GetMessagesPage(int pageIndex,int pageSize,int aId){
+	public List<MessageInfo> getMessagesPage(int pageIndex,int pageSize,int aId){
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {

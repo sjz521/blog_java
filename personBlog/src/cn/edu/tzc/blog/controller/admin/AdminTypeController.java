@@ -31,11 +31,11 @@ public class AdminTypeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		User user = (User) request.getSession().getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			request.setAttribute("msg", "未登录");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
-		}
+		}*/
 		request.setAttribute("user", user);
 		request.setAttribute("typeClass", "class=\"active\"");
 		
@@ -77,13 +77,7 @@ public class AdminTypeController extends HttpServlet {
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}else if(method.toLowerCase().equals("deleteAll")) {
-			boolean result = service.deleteAll();
-			String message = "";
-			if(!result) {
-				message = "全部分类删除失败";
-			}else {
-				message = "全部分类删除成功";
-			}
+			String message = service.deleteAll();
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}
@@ -107,13 +101,7 @@ public class AdminTypeController extends HttpServlet {
 			Type type = new Type();
 			type.setName(name);
 			TypeService service = new TypeService();
-			boolean result = service.addType(type);
-			String message = "";
-			if(!result) {
-				message = "添加分类失败";
-			}else {
-				message = "添加分类成功";
-			}
+			String message = service.addType(type);
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}

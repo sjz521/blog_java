@@ -27,12 +27,12 @@ public class AdminMessageDeleteController extends HttpServlet {
 		String message = "";
 		MessageService service = new MessageService();
 		if(ids==null || "".equals(ids)) {
-			message = service.DeleteAllMessage();
+			message = service.deleteAllMessage();
 		}else {
 			if(ids.contains(",")) {
-				message = service.DeleteChecked(ids.split(","));
+				message = service.deleteChecked(ids.split(","));
 			}else {
-				message = service.DeleteMessage(Integer.parseInt(ids));
+				message = service.deleteMessage(Integer.parseInt(ids));
 			}
 		}
 		/*String method = request.getParameter("method");

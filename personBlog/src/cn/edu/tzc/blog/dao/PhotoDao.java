@@ -22,7 +22,7 @@ public class PhotoDao {
 	 * @param uId
 	 * @return
 	 */
-	public List<Photo> ShowAll(int uId){
+	public List<Photo> getAll(int uId){
 		List<Photo> photos = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		
@@ -54,7 +54,7 @@ public class PhotoDao {
 	 * @param uId
 	 * @return
 	 */
-	public List<PhotoInfo> GetAll(int uId){
+	public List<PhotoInfo> getAllInfo(int uId){
 		List<PhotoInfo> photos = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -85,7 +85,7 @@ public class PhotoDao {
 	 * @param id
 	 * @return
 	 */
-	public Photo GetPhotoById(int id) {
+	public Photo getPhotoById(int id) {
 		Photo photo = new Photo();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -111,7 +111,8 @@ public class PhotoDao {
 	 * 添加图片
 	 * @param photo
 	 */
-	public void AddPhoto(Photo photo) {
+	public boolean addPhoto(Photo photo) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("insert into photo(name,created_at,uid) values(?,?,?)");
@@ -119,6 +120,7 @@ public class PhotoDao {
 			prep.setTimestamp(2, new Timestamp(new Date().getTime()));
 			prep.setInt(3, photo.getuId());
 			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,19 +128,21 @@ public class PhotoDao {
 		finally {
 			DBUtil.close(connection);
 		}
+		return result;
 	}
 	
 	/**
 	 * 删除单张图片
 	 * @param id
 	 */
-	public boolean DeletePhoto(int id) {
-		boolean result = true;
+	public boolean deletePhoto(int id) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("delete from photo where id=?");
 			prep.setInt(1, id);
-			result = prep.execute();
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,13 +156,14 @@ public class PhotoDao {
 	 * 删除全部图片
 	 * @param uId
 	 */
-	public boolean DeleteAllPhoto(int uId) {
-		boolean result = true;
+	public boolean deleteAllPhoto(int uId) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("delete from photo where uid=?");
 			prep.setInt(1, uId);
-			result = prep.execute();
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,7 +178,7 @@ public class PhotoDao {
 	 * @param ids
 	 * @return
 	 */
-	public boolean DeleteChecked(String[] ids) {
+	public boolean deletePhotos(String[] ids) {
 		//1.根据id数量组成SQL语句
 		StringBuilder sb = new StringBuilder();
 		sb.append("delete from photo where id in (");
@@ -240,7 +245,7 @@ public class PhotoDao {
 	 * @param uId
 	 * @return
 	 */
-	public List<PhotoInfo> GetPhotoInPage(int pageIndex,int pageSize,int uId){
+	public List<PhotoInfo> getPhotoPage(int pageIndex,int pageSize,int uId){
 		List<PhotoInfo> photos = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {

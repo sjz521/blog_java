@@ -117,47 +117,52 @@ public class UserDao {
 	 * @param name
 	 * @param password
 	 */
-	public void AddUser(String email,String name,String password) {
+	public boolean addUser(String email,String name,String password) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
-		int result = 0;
 		try {
 			PreparedStatement prep = connection.prepareStatement("insert into user(email,name,password,role) values(?,?,?,1)");
 			prep.setString(1, email);
 			prep.setString(2, name);
 			prep.setString(3, password);
 			prep.executeUpdate();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
 		}
+		return result;
 	}
 	
 	/**
 	 * 修改用户最近登录时间
 	 * @param userId
 	 */
-	public void UpdateUserLoginTime(int userId) {
+	public boolean updateUserLoginTime(int userId) {
+		boolean result = false;
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("update user set lasttime=? where id=?");
 			prep.setTimestamp(1, new Timestamp(new Date().getTime()));
 			prep.setInt(2, userId);
 			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
 		}
+		return result;
 	}
 	
 	/**
 	 * 用户更新
 	 * @param user
 	 */
-	public boolean UpdateUser(User user) {
+	public boolean updateUser(User user) {
 		Connection connection = DBUtil.getConnection();
 		boolean result = true;
 		try {
@@ -182,7 +187,7 @@ public class UserDao {
 	 * 获得除博主之外的其他用户
 	 * @return
 	 */
-	public List<User> GetAllUser(){
+	public List<User> getAllUser(){
 		List<User> users = new ArrayList<User>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -212,7 +217,7 @@ public class UserDao {
 	 * 获得留言个数
 	 * @return
 	 */
-	public int GetTotal() {
+	public int getTotal() {
 		int num = 0;
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -230,7 +235,7 @@ public class UserDao {
 		return num;	
 	}
 	
-	public List<User> GetUsersPage(int pageIndex,int pageSize){
+	public List<User> getUsersPage(int pageIndex,int pageSize){
 		List<User> users = new ArrayList<User>();
 		Connection connection = DBUtil.getConnection();
 		try {

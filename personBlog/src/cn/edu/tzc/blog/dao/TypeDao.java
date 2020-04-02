@@ -20,7 +20,7 @@ public class TypeDao {
 	 * 返回所有分类
 	 * @return
 	 */
-	public List<Type> showAllTypes(){
+	public List<Type> getAll(){
 		List<Type> types = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
@@ -104,21 +104,19 @@ public class TypeDao {
 	 */
 	public boolean addType(Type type) {
 		boolean result = false;
-		
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("insert into type(name,created_at) values(?,?)");
 			prep.setString(1, type.getName());
 			prep.setTimestamp(2, new Timestamp(new Date().getTime()));
-			result = prep.execute();
-			
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
 		}
-		
 		return result;
 	}
 	
@@ -133,8 +131,8 @@ public class TypeDao {
 		try {
 			PreparedStatement prep = connection.prepareStatement("delete from type where id=?");
 			prep.setInt(1, id);
-			result = prep.execute();
-			
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,7 +151,8 @@ public class TypeDao {
 		Connection connection = DBUtil.getConnection();
 		try {
 			PreparedStatement prep = connection.prepareStatement("delete from type");
-			result = prep.execute();
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -194,13 +193,12 @@ public class TypeDao {
 	}
 	
 	/**
-	 * 删除多篇文章
+	 * 删除多个分类
 	 * @param ids
 	 * @return
 	 */
-	public boolean deleteChecked(String[] ids) {
+	public boolean deleteTypes(String[] ids) {
 		boolean result = false;
-		
 		//1.处理sql语句
 		StringBuilder sb = new StringBuilder();
 		sb.append("delete from type where id in (");
@@ -221,17 +219,14 @@ public class TypeDao {
 			for(int i=0;i<params.length;i++) {
 				prep.setInt(i+1, params[i]);
 			}
-			int n = prep.executeUpdate();
-			if(n>0) {
-				result = true;
-			}
+			prep.executeUpdate();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			DBUtil.close(connection);
 		}
-		
 		return result;
 	}
 	

@@ -16,8 +16,8 @@ public class MessageService {
 	 * 获得所有留言数
 	 * @return
 	 */
-	public List<MessageInfo> GetAllReply(){
-		List<MessageInfo> replies = dao.GetAllReply();
+	public List<MessageInfo> getAllMessage(){
+		List<MessageInfo> replies = dao.getAllMessage();
 		if(replies == null) {
 			replies = new ArrayList<MessageInfo>();
 		}
@@ -28,8 +28,13 @@ public class MessageService {
 	 * 添加留言
 	 * @param reply
 	 */
-	public boolean AddReply(Message reply) {
-		return dao.AddReply(reply);
+	public String addMessage(Message reply) {
+		boolean result = dao.addMessage(reply);
+		if(result) {
+			return "留言添加成功";
+		}else {
+			return "留言添加失败";
+		}
 	}
 	
 	/**
@@ -37,8 +42,8 @@ public class MessageService {
 	 * @param id
 	 * @return
 	 */
-	public String DeleteMessage(int id) {
-		boolean result = dao.DeleteMessage(id);
+	public String deleteMessage(int id) {
+		boolean result = dao.deleteMessage(id);
 		if(result) {
 			return "删除成功";
 		}else {
@@ -50,8 +55,8 @@ public class MessageService {
 	 * 删除全部留言
 	 * @return
 	 */
-	public String DeleteAllMessage() {
-		boolean result = dao.DeleteAllMessage();
+	public String deleteAllMessage() {
+		boolean result = dao.deleteAllMessage();
 		if(result) {
 			return "删除成功";
 		}
@@ -65,8 +70,8 @@ public class MessageService {
 	 * @param ids
 	 * @return
 	 */
-	public String DeleteChecked(String[] ids) {
-		boolean result = dao.DeleteChecked(ids);
+	public String deleteChecked(String[] ids) {
+		boolean result = dao.deleteMessages(ids);
 		if(result) {
 			return "删除成功";
 		}
@@ -77,8 +82,8 @@ public class MessageService {
 	 * 获得所有留言数
 	 * @return
 	 */
-	public int GetTotal() {
-		return dao.GetTotal();
+	public int getTotal() {
+		return dao.getTotal();
 	}
 	
 	/**
@@ -87,8 +92,8 @@ public class MessageService {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<MessageInfo> GetMessagePage(int pageIndex,int pageSize){
-		return dao.GetMessagesPage(pageIndex, pageSize);
+	public List<MessageInfo> getMessagePage(int pageIndex,int pageSize){
+		return dao.getMessagesPage(pageIndex, pageSize);
 	}
 	
 	/**
@@ -98,9 +103,9 @@ public class MessageService {
 	 * @return
 	 */
 	public Page<MessageInfo> findMessageWithPage(int pageIndex,int pageSize){
-		int totalRecord = dao.GetTotal();
+		int totalRecord = dao.getTotal();
 		Page<MessageInfo> page = new Page<>(pageIndex, pageSize, totalRecord);
-		List<MessageInfo> list = dao.GetMessagesPage(pageIndex, pageSize);
+		List<MessageInfo> list = dao.getMessagesPage(pageIndex, pageSize);
 		page.setList(list);
 		return page;
 	}
@@ -113,9 +118,9 @@ public class MessageService {
 	 * @return
 	 */
 	public Page<MessageInfo> findMessageWithPageByAid(int pageIndex,int pageSize,int aId){
-		int totalRecord = dao.GetTotal(aId);
+		int totalRecord = dao.getTotal(aId);
 		Page<MessageInfo> page = new Page<>(pageIndex, pageSize, totalRecord);
-		List<MessageInfo> list = dao.GetMessagesPage(pageIndex, pageSize,aId);
+		List<MessageInfo> list = dao.getMessagesPage(pageIndex, pageSize,aId);
 		page.setList(list);
 		return page;
 	}

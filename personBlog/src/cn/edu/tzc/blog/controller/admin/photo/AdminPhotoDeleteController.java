@@ -49,13 +49,13 @@ public class AdminPhotoDeleteController extends HttpServlet {
 		String message = "";
 		try {
 			if("" == ids || ids == null) {
-				message = photoService.DeleteAllPhoto(user.getId(),path,filePath);
+				message = photoService.deleteAllPhoto(user.getId(),path,filePath);
 			}else {
 				if(ids.contains(",")) {
-					message = photoService.DeleteChecked(ids.split(","), path,filePath);
+					message = photoService.deleteChecked(ids.split(","), path,filePath);
 				}
 				else {
-					message = photoService.DeletePhoto(Integer.parseInt(ids),path,filePath);
+					message = photoService.deletePhoto(Integer.parseInt(ids),path,filePath);
 				}
 			}
 		} catch (Exception e) {

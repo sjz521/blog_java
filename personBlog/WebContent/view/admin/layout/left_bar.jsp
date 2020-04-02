@@ -83,7 +83,7 @@
                 </li>
                 
                 <li class="sidebar-nav-link">
-                    <a href="${pageContext.request.contextPath }/blog/home">
+                    <a href="${pageContext.request.contextPath }/blog/home" target="_blank">
                         <i class="am-icon-home sidebar-nav-link-logo"></i>博客首页
                     </a>
                 </li>

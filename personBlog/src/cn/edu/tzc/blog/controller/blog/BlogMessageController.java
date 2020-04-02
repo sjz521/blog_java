@@ -50,13 +50,7 @@ public class BlogMessageController extends HttpServlet {
 		reply.setaId(aId);
 		reply.setuId(user.getId());
 		MessageService service = new MessageService();
-		boolean result = service.AddReply(reply);
-		String message = "";
-		if(!result) {
-			message = "留言添加失败";
-		}else {
-			message = "留言添加成功";
-		}
+		String message = service.addMessage(reply);
 		String url = request.getContextPath()+"/blog/article?id="+aId;
 		pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		pw.close();

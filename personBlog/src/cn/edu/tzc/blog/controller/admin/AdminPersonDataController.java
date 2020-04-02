@@ -35,11 +35,11 @@ public class AdminPersonDataController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		User user = (User) request.getSession().getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			request.setAttribute("msg", "未登录");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
-		}
+		}*/
 		
 		request.setAttribute("user", user);
 		request.setAttribute("personClass", "class=\"active\"");
@@ -69,7 +69,7 @@ public class AdminPersonDataController extends HttpServlet {
 			String password = request.getParameter("newPassword");
 			//2.更新密码
 			UserService service = new UserService();
-			User user = service.GetUserByEmail(email);
+			User user = service.getUserByEmail(email);
 			user.setPassword(password);
 			String message = service.updateUser(user);
 			request.setAttribute("message", message);
@@ -87,7 +87,7 @@ public class AdminPersonDataController extends HttpServlet {
 				String introduction = list.get(4).getString("utf-8");
 				
 				UserService service = new UserService();
-				User user = service.GetUserByEmail(email);
+				User user = service.getUserByEmail(email);
 				user.setName(name);
 				user.setIntroduction(introduction);
 				

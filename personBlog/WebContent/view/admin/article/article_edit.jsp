@@ -137,7 +137,9 @@
 		                                    <!--<textarea class="ckeditor" id="content" placeholder="请输入文章内容" name="content">${article.content }</textarea>-->
 		                                    <div id="test-editormd">
 		                                    	<!-- 书写与实时显示的textarea -->
-                                    			<textarea name="content" style="display:none;">${content }</textarea>       			
+                                    			<textarea name="content" style="display:none;">
+                                    				<c:out value="${content }"></c:out>
+                                    			</textarea>       			
                                     		</div>                        
 		                                </div>
 		                            </div> 

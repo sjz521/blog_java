@@ -26,7 +26,7 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 */
 	public List<ArticleInfo> showAllArticles(int uid){
-		return articleDao.GetAll(uid);
+		return articleDao.getAll(uid);
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class ArticleService extends FileUtil {
 	 * @throws ArticleException
 	 */
 	public ArticleInfo findById(int id) throws ArticleException {
-		ArticleInfo articleInfo =  articleDao.FindById(id);
+		ArticleInfo articleInfo =  articleDao.findById(id);
 		if(articleInfo == null) {
 			throw new ArticleException("找不到该文章！！");
 		}
@@ -52,12 +52,12 @@ public class ArticleService extends FileUtil {
 	 * @throws ArticleException
 	 */
 	public List<ArticleInfo> getArticlesPage(int uId,int pageIndex,int pageSize){
-		List<ArticleInfo> articles = articleDao.GetArticlePage(pageIndex, pageSize, uId);
+		List<ArticleInfo> articles = articleDao.getArticlePage(pageIndex, pageSize, uId);
 		return articles;
 	}
 	
 	public List<ArticleInfo> getArticlePage(int uId,int pageIndex,int pageSize,int tId){
-		List<ArticleInfo> articles = articleDao.GetArticleByTid(pageIndex, pageSize, uId, tId);
+		List<ArticleInfo> articles = articleDao.getArticleByTid(pageIndex, pageSize, uId, tId);
 		return articles;
 	}
 	
@@ -67,7 +67,7 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 */
 	public int getArticleCount(int uId) {
-		return articleDao.GetToal(uId);
+		return articleDao.getToal(uId);
 	}
 	
 	/**
@@ -84,8 +84,13 @@ public class ArticleService extends FileUtil {
 	 * 添加文章
 	 * @param article
 	 */
-	public void addArticle(Article article) {
-		articleDao.AddArticle(article);
+	public String addArticle(Article article) {
+		boolean result = articleDao.addArticle(article);
+		if(result) {
+			return "文章添加成功";
+		}else {
+			return "文章添加失败";
+		}
 	}
 	
 	/**
@@ -96,8 +101,8 @@ public class ArticleService extends FileUtil {
 	 * @param contentPath	文章内容在.metadata文件夹里的路径
 	 * @param contentPublicPath	文章内容在public文件夹的路径
 	 */
-	public void updateArticle(Article article,String imgPath,String imgPublicPath,String contentPath,String contentPublicPath) {
-		Article oldInfo = articleDao.FindById(article.getId());
+	public String updateArticle(Article article,String imgPath,String imgPublicPath,String contentPath,String contentPublicPath) {
+		Article oldInfo = articleDao.findById(article.getId());
 		if(article.getPhoto() != oldInfo.getPhoto()) {
 			delFile(imgPath, oldInfo.getPhoto());
 			delFile(imgPublicPath, oldInfo.getPhoto());
@@ -106,7 +111,12 @@ public class ArticleService extends FileUtil {
 			delFile(contentPath, oldInfo.getContent());
 			delFile(contentPublicPath, oldInfo.getContent());
 		}
-		articleDao.UpdateArticle(article);
+		boolean result = articleDao.updateArticle(article);
+		if(result) {
+			return "文章修改成功";
+		}else {
+			return "文章修改失败";
+		}
 	}
 	
 	/**
@@ -115,13 +125,13 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 * @throws ArticleException
 	 */
-	public String DeleteArticle(int id,String path) {
-		Article article = articleDao.FindById(id);
+	public String deleteArticle(int id,String path) {
+		Article article = articleDao.findById(id);
 		boolean fileResult = delFile(path, article.getPhoto());
 		if(!fileResult) {
 			return "文章相关图片删除失败";
 		}
-		boolean result = articleDao.Delete(id);
+		boolean result = articleDao.deleteArticle(id);
 		if(result) {
 			return "删除成功";
 		}else {
@@ -135,12 +145,12 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 * @throws ArticleException
 	 */
-	public String DeleteAllArticle(int uId,String path) throws ArticleException {
-		List<ArticleInfo> articles = articleDao.GetAll(uId);
+	public String deleteAllArticle(int uId,String path) throws ArticleException {
+		List<ArticleInfo> articles = articleDao.getAll(uId);
 		for (ArticleInfo articleInfo : articles) {
 			delFile(path, articleInfo.getPhoto());
 		}
-		boolean result = articleDao.DeleteAll(uId);
+		boolean result = articleDao.deleteAll(uId);
 		if(result) {
 			return "删除成功";
 		}else {
@@ -156,9 +166,9 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 */
 	public Page<ArticleInfo> findArticlesWithPage(int pageIndex,int pageSize,int uId){
-		int totalRecord = articleDao.GetToal(uId);
+		int totalRecord = articleDao.getToal(uId);
 		Page<ArticleInfo> page = new Page<>(pageIndex, pageSize,totalRecord);
-		List<ArticleInfo> articleInfos = articleDao.GetArticlePage(pageIndex, pageSize, uId);
+		List<ArticleInfo> articleInfos = articleDao.getArticlePage(pageIndex, pageSize, uId);
 		page.setList(articleInfos);
 		
 		return page;
@@ -175,7 +185,7 @@ public class ArticleService extends FileUtil {
 	public Page<ArticleInfo> findArticleWithPageByTid(int pageIndex,int pageSize,int uId,int tId){
 		int totalRecord = articleDao.getTotalByTid(uId, tId);
 		Page<ArticleInfo> page = new Page<>(pageIndex, pageSize,totalRecord);
-		List<ArticleInfo> articleInfos = articleDao.GetArticleByTid(pageIndex, pageSize, uId, tId);
+		List<ArticleInfo> articleInfos = articleDao.getArticleByTid(pageIndex, pageSize, uId, tId);
 		page.setList(articleInfos);
 		return page;
 	}
@@ -218,12 +228,12 @@ public class ArticleService extends FileUtil {
 	public String delCheck(String[] ids,String path) {
 		//1.删除文件
 		for (String id : ids) {
-			ArticleInfo article = articleDao.FindById(Integer.parseInt(id));
+			ArticleInfo article = articleDao.findById(Integer.parseInt(id));
 			delFile(path, article.getPhoto());
 		}
 		
 		//2.删除数据
-		boolean result = articleDao.DeleteCheck(ids);
+		boolean result = articleDao.deleteArticles(ids);
 		if(result) {
 			return "删除成功";
 		}else {

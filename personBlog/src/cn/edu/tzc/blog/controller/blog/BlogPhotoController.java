@@ -31,21 +31,25 @@ public class BlogPhotoController extends HttpServlet {
 		
 		String title = "登录";
 		User user = (User) request.getSession().getAttribute("user");
-		if(user != null) {
+		/*if(user != null) {
 			title = user.getName()+"/退出登录";
 		}else {
 			
 			user = userService.findUserById(id);
 			request.setAttribute("user", user);
 		}
-		request.setAttribute("title", title);
+		request.setAttribute("title", title);*/
+		if(user == null) {
+			user = userService.findUserById(id);
+			request.setAttribute("user", user);
+		}
 		
 		int pageIndex = 0;
 		String str = request.getParameter("pageIndex");
 		if(""!=str && str != null) {
 			pageIndex = Integer.parseInt(str);
 		}
-		int pageSize = 5;
+		int pageSize = 6;
 		
 		Page<PhotoInfo> page = service.findPhotoWithPage(pageIndex, pageSize, id);
 		request.setAttribute("page", page);

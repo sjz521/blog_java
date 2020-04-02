@@ -45,17 +45,17 @@ public class AdminPhotoEditController extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		if(user == null) {
+		/*if(user == null) {
 			request.setAttribute("msg", "未登录");
 			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 			return;
-		}
+		}*/
 		
 		PhotoService photoService = new PhotoService();
 		String ids = request.getParameter("id");
 		if("" != ids && ids != null) {
 			int id = Integer.parseInt(ids);
-			Photo photo = photoService.GetPhotoById(id);
+			Photo photo = photoService.getPhotoById(id);
 			request.setAttribute("photo", photo);
 		}
 		
@@ -75,6 +75,7 @@ public class AdminPhotoEditController extends HttpServlet {
 		
 		PhotoService service =new PhotoService();
 		Photo photo = new Photo();
+		String message = "";
 		
 		try {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -102,7 +103,7 @@ public class AdminPhotoEditController extends HttpServlet {
 			}
 			photo.setName(fileName);
 			photo.setuId(uId);
-			service.AddPhoto(photo);
+			message = service.addPhoto(photo);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -113,7 +114,7 @@ public class AdminPhotoEditController extends HttpServlet {
 			e.printStackTrace();
 		}
 		String url = request.getContextPath()+"/admin/photo";
-		pw.println("<html><body><script language='javascript'>alert('图片添加成功');window.location.href='"+url+"';</script></body></html>");
+		pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		pw.close();
 	}
 

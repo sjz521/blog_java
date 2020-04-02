@@ -35,20 +35,25 @@ public class BlogHomeController extends HttpServlet {
 		// TODO Auto-generated method stub
 		ArticleService articleService = new ArticleService();
 		UserService userService = new UserService();
-		TypeService typeService = new TypeService();
-		boolean isType = false;
 		
+		boolean isType = false;
 		int uid=0;
-		List<Type> types = new ArrayList<Type>();
-		String title = "登录";
 		
 		uid = userService.findAdminId();
-		types = typeService.showAllTypes();
+		/*TypeService typeService = new TypeService();
+		List<Type> types = typeService.showAllTypes();
+		request.setAttribute("types", types);*/
 		
 		User user = (User) request.getSession().getAttribute("user");
+		/*
+		String title = "登录";
 		if(user != null) {
 			title = user.getName()+"/退出登录";
 		}else {
+			user = userService.findUserById(uid);
+			request.setAttribute("user", user);
+		}*/
+		if(user == null) {
 			user = userService.findUserById(uid);
 			request.setAttribute("user", user);
 		}
@@ -72,9 +77,9 @@ public class BlogHomeController extends HttpServlet {
 		}
 		
 		request.setAttribute("page", page);
-		request.setAttribute("title", title);
+		//request.setAttribute("title", title);
 		//request.setAttribute("articles", articles);
-		request.setAttribute("types", types);
+		
 		request.setAttribute("isType", isType);
 		request.getRequestDispatcher("../view/blog/blog_home.jsp").forward(request, response);
 	}
@@ -134,5 +139,6 @@ public class BlogHomeController extends HttpServlet {
 		request.setAttribute("isType", isType);
 		request.getRequestDispatcher("../view/blog/blog_home.jsp").forward(request, response);
 	}
+	
 
 }

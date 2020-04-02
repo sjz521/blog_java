@@ -30,10 +30,11 @@ public class RegisterController extends HttpServlet {
 		String email = request.getParameter("email");
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
+		String message = "";
 		
 		UserService userService = new UserService();
 		try {
-			userService.register(email, name, password);
+			message = userService.register(email, name, password);
 		} catch (UserException e) {
 			//获取异常并保存到request域
 			request.setAttribute("msg", e.getMessage());
@@ -42,7 +43,7 @@ public class RegisterController extends HttpServlet {
 		}
 		/*PrintWriter pw = response.getWriter();
 		pw.println("<script>alert('注册成功')</script>");*/
-		request.setAttribute("msg", "注册成功");
+		request.setAttribute("msg", message);
 		request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
 		
 	}

@@ -40,14 +40,14 @@ public class AdminArticleDeleteController extends HttpServlet {
 		String url = request.getContextPath()+"/admin/article";
 		try {
 			if("" == ids || ids == null) {
-				message = articleService.DeleteAllArticle(user.getId(),path);
+				message = articleService.deleteAllArticle(user.getId(),path);
 			}else {
 				if(ids.contains(",")) {
 					String[] idList = ids.split(",");
 					message = articleService.delCheck(idList, filePath);
 				}
 				else {
-					message = articleService.DeleteArticle(Integer.parseInt(ids),path);
+					message = articleService.deleteArticle(Integer.parseInt(ids),path);
 				}
 			}
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
