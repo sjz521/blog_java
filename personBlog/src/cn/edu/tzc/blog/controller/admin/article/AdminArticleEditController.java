@@ -86,7 +86,7 @@ public class AdminArticleEditController extends HttpServlet {
 		}
 		request.setAttribute("content", content);
 		
-		types = typeService.showAllTypes();
+		types = typeService.getAllTypes();
 		request.setAttribute("types", types);
 		
 		request.getRequestDispatcher("/view/admin/article/article_edit.jsp").forward(request,response);

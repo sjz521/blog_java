@@ -2,6 +2,7 @@ package cn.edu.tzc.blog.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -79,8 +80,7 @@ public class BasicFilter implements Filter {
 			request.setAttribute("title", title);
 			
 			TypeService typeService = new TypeService();
-			List<Type> types = typeService.showAllTypes();
-			request.setAttribute("types", types);
+			request.setAttribute("types", typeService.getAllTypes());
 			
 			if(path.indexOf("article",lastIndex)>-1) {
 				// blog/article，需要判断是否登录

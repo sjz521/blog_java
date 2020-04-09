@@ -1,13 +1,17 @@
 package cn.edu.tzc.blog.controller.blog;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.edu.tzc.blog.domain.Type;
 import cn.edu.tzc.blog.domain.User;
+import cn.edu.tzc.blog.service.TypeService;
 import cn.edu.tzc.blog.service.UserService;
 
 /**
@@ -35,14 +39,15 @@ public class BlogAboutController extends HttpServlet {
 		
 		int uId = userService.findAdminId();
 		User admin = userService.findUserById(uId);
-		User user = (User) request.getSession().getAttribute("user");
+		/*User user = (User) request.getSession().getAttribute("user");
 		if(user != null) {
 			title = user.getName()+"/退出登录";
 		}else {
 			user = userService.findUserById(uId);
 			request.setAttribute("user", user);
 		}
-		request.setAttribute("title", title);
+		request.setAttribute("title", title);*/
+		
 		request.setAttribute("introduction", admin.getIntroduction());
 		request.getRequestDispatcher("../view/blog/about.jsp").forward(request, response);
 	}

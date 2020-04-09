@@ -37,13 +37,7 @@ public class BlogHomeController extends HttpServlet {
 		UserService userService = new UserService();
 		
 		boolean isType = false;
-		int uid=0;
-		
-		uid = userService.findAdminId();
-		/*TypeService typeService = new TypeService();
-		List<Type> types = typeService.showAllTypes();
-		request.setAttribute("types", types);*/
-		
+		int uid = userService.findAdminId();
 		User user = (User) request.getSession().getAttribute("user");
 		/*
 		String title = "登录";
@@ -68,17 +62,20 @@ public class BlogHomeController extends HttpServlet {
 		Page<ArticleInfo> page = null;
 		String tIds = request.getParameter("tId");
 		if(""!=tIds && tIds != null) {
+			//显示某一分类下的所有文章
 			int tId = Integer.parseInt(tIds);
 			page = articleService.findArticleWithPageByTid(pageIndex, pageSize, uid, tId);
 			request.setAttribute("tId", tId);
 			isType = true;
+			TypeService typeService = new TypeService();
+			request.setAttribute("type", typeService.getTypeById(tId));
+			
 		}else {
 			page = articleService.findArticlesWithPage(pageIndex, pageSize, uid);
 		}
 		
 		request.setAttribute("page", page);
 		//request.setAttribute("title", title);
-		//request.setAttribute("articles", articles);
 		
 		request.setAttribute("isType", isType);
 		request.getRequestDispatcher("../view/blog/blog_home.jsp").forward(request, response);
@@ -102,7 +99,7 @@ public class BlogHomeController extends HttpServlet {
 		String title = "登录";
 		
 		uid = userService.findAdminId();
-		types = typeService.showAllTypes();
+		types = typeService.getAllTypes();
 		
 		User user = (User) request.getSession().getAttribute("user");
 		if(user != null) {
@@ -128,10 +125,12 @@ public class BlogHomeController extends HttpServlet {
 			page = articleService.searchArticles(uid, keyWords, pageIndex, pageSize,tId);
 			request.setAttribute("tId", tId);
 			isType = true;
+			request.setAttribute("type", typeService.getTypeById(tId));	
 		}else {
 			page = articleService.searchArticles(uid, keyWords, pageIndex, pageSize);
 		}
 		
+		request.setAttribute("keyWords", keyWords);
 		request.setAttribute("page", page);
 		request.setAttribute("title", title);
 		//request.setAttribute("articles", articles);

@@ -1,5 +1,6 @@
 package cn.edu.tzc.blog.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.edu.tzc.blog.dao.TypeDao;
@@ -17,7 +18,7 @@ public class TypeService {
 	 * @return
 	 * @throws TypeException
 	 */
-	public List<Type> showAllTypes(){
+	public List<Type> getAllTypes(){
 		return typeDao.getAll();
 	}
 	
@@ -91,13 +92,8 @@ public class TypeService {
 		return message;
 	}
 	
-	public Type getTypeById(int id) throws TypeException {
-		Type type = typeDao.getTypeById(id);
-		if(type == null){
-			throw new TypeException("未找到相应的分类");
-		}
-		
-		return type;
+	public Type getTypeById(int id){
+		return typeDao.getTypeById(id);
 	}
 	
 	/**

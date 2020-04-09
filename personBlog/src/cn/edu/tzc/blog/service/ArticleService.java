@@ -25,7 +25,7 @@ public class ArticleService extends FileUtil {
 	 * @param uid
 	 * @return
 	 */
-	public List<ArticleInfo> showAllArticles(int uid){
+	public List<ArticleInfo> getAllArticles(int uid){
 		return articleDao.getAll(uid);
 	}
 	

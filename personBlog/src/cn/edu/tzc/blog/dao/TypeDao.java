@@ -31,7 +31,6 @@ public class TypeDao {
 				type.setId(rs.getInt("id"));
 				type.setName(rs.getString("name"));
 				type.setCreated_at(rs.getTimestamp("created_at"));
-				
 				types.add(type);
 			}
 		} catch (SQLException e) {

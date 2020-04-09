@@ -56,12 +56,9 @@ public class BlogArticleController extends HttpServlet {
 		TypeService typeService = new TypeService();
 		MessageService messageService = new MessageService();
 		
-		//List<Type> types = new ArrayList<>();
 		try {
 			ArticleInfo articleInfo = articleService.findById(id);
 			request.setAttribute("articleInfo", articleInfo);
-			//types = typeService.showAllTypes();
-			//request.setAttribute("types", types);
 			
 			int pageIndex = 0;
 			String str = request.getParameter("pageIndex");
