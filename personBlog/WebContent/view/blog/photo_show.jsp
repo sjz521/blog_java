@@ -32,7 +32,7 @@
 							<div style="width: 185px; height: 212px; float:left;">
 								<img src="${pageContext.request.contextPath}/public/images/photos/${photo['name'] }" width="180" height="180" alt="pix" />
 								<p style="text-align: center; line-height: 10px">
-									${photo['name'] }
+									${photo['realName'] }
 								</p>
 							</div>
 							<%if(i%3==0 && i!=0){ %>

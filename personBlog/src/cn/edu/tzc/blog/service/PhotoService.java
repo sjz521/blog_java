@@ -1,5 +1,6 @@
 package cn.edu.tzc.blog.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import cn.edu.tzc.blog.dao.PhotoDao;

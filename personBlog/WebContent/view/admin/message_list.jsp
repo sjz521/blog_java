@@ -81,18 +81,18 @@
 												<div class="am-btn-group am-btn-group-xs">
 													<script type="text/javascript">
 															function delAllMessage(){
-																var con = confirm("是否确认全部删除！！！");
+																var con = confirm("是否确认删除全部留言！！！");
 																if(con==true){
-																	location.href = "${pageContext.request.contextPath}/admin/message/delete";
+																	location.href = "${pageContext.request.contextPath}/admin/message?method=delete";
 																}else{
 																	return false;
 																}
 															}
 															
 															function delMessage(a){
-					                                            var con = confirm("是否确认删除这条数据???");
+					                                            var con = confirm("是否确认删除这条留言???");
 					                                            if(con==true){
-					                                                location.href = "${pageContext.request.contextPath}/admin/message/delete?id="+a;
+					                                                location.href = "${pageContext.request.contextPath}/admin/message?method=delete&id="+a;
 					                                            }else{
 					                                            	return false;
 					                                            }
@@ -100,7 +100,7 @@
 															
 															//删除勾选
 															function delChecked(){
-																var flag = confirm("确认要删除全部勾选的文章吗？");
+																var flag = confirm("确认要删除全部勾选的留言吗？");
 																if(flag){
 																	var s='';
 																	$('input[name="all"]:checked').each(function(){
@@ -111,7 +111,7 @@
 																		s = s.substring(0,s.length-1);
 																	}
 																	//生成连接
-																	location.href = "${pageContext.request.contextPath }/admin/message/delete?id="+s;
+																	location.href = "${pageContext.request.contextPath }/admin/message?method=delete&id="+s;
 																}
 																else{
 																	return false;

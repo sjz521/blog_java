@@ -28,7 +28,7 @@ public class ArticleDao {
 		Connection connection =  DBUtil.getConnection();
 		try {
 			//查询文章视图
-			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uid=?");
+			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uid=? order by created_at desc");
 			prep.setInt(1, uid);
 			ResultSet rs = prep.executeQuery();
 			while(rs.next()) {
@@ -124,7 +124,7 @@ public class ArticleDao {
 		List<ArticleInfo> articles = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? order by created_at desc limit ?,?");
 			prep.setInt(1, uId);
 			prep.setInt(2, pageIndex*pageSize);
 			prep.setInt(3, pageSize);
@@ -328,7 +328,7 @@ public class ArticleDao {
 		List<ArticleInfo> articles = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and tid=? limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and tid=? order by created_at desc limit ?,?");
 			prep.setInt(1, uId);
 			prep.setInt(2, tId);
 			prep.setInt(3, pageIndex*pageSize);
@@ -403,7 +403,7 @@ public class ArticleDao {
 		List<ArticleInfo> list = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and locate(?,concat(title,introduction))");
+			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and locate(?,concat(title,introduction)) order by created_at desc");
 			prep.setInt(1, uId);
 			prep.setString(2, key);
 			ResultSet rs = prep.executeQuery();
@@ -430,12 +430,19 @@ public class ArticleDao {
 		}
 		return list;
 	}
-
+	
+	/**
+	 * 查找标题或简介包括关键词在某一分类下的文章
+	 * @param key
+	 * @param uId
+	 * @param tId
+	 * @return
+	 */
 	public List<ArticleInfo> searchArticleByKey(String key,int uId,int tId){
 		List<ArticleInfo> list = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and tId=? and locate(?,concat(title,introduction))");
+			PreparedStatement prep = connection.prepareStatement("select *from articleInfo where uId=? and tId=? and locate(?,concat(title,introduction)) order by created_at desc");
 			prep.setInt(1, uId);
 			prep.setInt(2, tId);
 			prep.setString(3, key);

@@ -2,6 +2,7 @@ package cn.edu.tzc.blog.controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,24 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.edu.tzc.blog.domain.Message;
+import cn.edu.tzc.blog.domain.MessageInfo;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
-import cn.edu.tzc.blog.service.UserService;
+import cn.edu.tzc.blog.service.MessageService;
 
 /**
- * Servlet implementation class AdminUserController
+ * Servlet implementation class AdminMessageController
  */
-@WebServlet("/admin/user")
-public class AdminUserController extends HttpServlet {
+@WebServlet("/admin/message")
+public class AdminMessageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminUserController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,43 +30,58 @@ public class AdminUserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		User user = (User) request.getSession().getAttribute("user");
-		UserService service = new UserService();
+		/*if(user == null) {
+			request.setAttribute("msg", "未登录");
+			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+			return;
+		}*/
+		request.setAttribute("user", user);
+		MessageService service = new MessageService();
 		
 		String method = request.getParameter("method");
-		if(method==null || "".equals(method)) {
-			int pageIndex = 0;
+		if(method == null ||"".equals(method)) {
+			int pageIndex=0;
 			String str = request.getParameter("pageIndex");
-			if(""!=str && str !=null) {
+			if(""!=str && str!=null) {
 				pageIndex = Integer.parseInt(str);
 			}
+			
+			//处理分页
 			int pageSize = 10;
-			Page<User> page = service.findUserWithPage(pageIndex, pageSize);
+			Page<MessageInfo> page = service.findMessageWithPage(pageIndex, pageSize);
 			
 			request.setAttribute("page", page);
-			
-			request.setAttribute("user", user);
-			request.setAttribute("userClass", "class=\"active\"");
-			request.getRequestDispatcher("/view/admin/user_list.jsp").forward(request, response);
-		}else{
+			request.setAttribute("messageClass", "class=\"active\"");
+			request.getRequestDispatcher("/view/admin/message_list.jsp").forward(request, response);
+		}
+		else {
 			String ids = request.getParameter("id");
 			String message = "";
-			if(ids == null || "".equals(ids)) {
-				//删除除博主以外的所有用户
-				message = service.deleteAllUser();
+			if(ids==null || "".equals(ids)) {
+				message = service.deleteAllMessage();
 			}else {
 				if(ids.contains(",")) {
-					message = service.deleteUsers(ids);
+					message = service.deleteChecked(ids.split(","));
 				}else {
-					message = service.deleteUser(Integer.parseInt(ids));
+					message = service.deleteMessage(Integer.parseInt(ids));
 				}
 			}
+			/*String method = request.getParameter("method");
+			String message = "";
+			
+			if("all" == method) {
+				message = service.DeleteAllMessage();
+			}
+			else if("single" == method) {
+				int id = Integer.parseInt(request.getParameter("id"));
+				message = service.DeleteMessage(id);
+			}*/
 			response.setContentType("text/html;charset=	UTF-8");
 			PrintWriter pw = response.getWriter();
-			String url =  request.getContextPath()+"/admin/user";
+			String url =  request.getContextPath()+"/admin/message";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 			pw.close();
 		}
-		
 		
 		
 	}

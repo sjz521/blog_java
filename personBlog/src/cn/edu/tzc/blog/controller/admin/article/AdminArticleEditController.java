@@ -47,6 +47,7 @@ import cn.edu.tzc.blog.util.FileUtil;
 @WebServlet("/admin/article/edit")
 public class AdminArticleEditController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String defaultImg = "defaultArticleImg.jpg";
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -67,24 +68,31 @@ public class AdminArticleEditController extends HttpServlet {
 		String savePath = request.getServletContext().getRealPath("/md");
 		String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
 		String filePath = articleService.getFilePath(savePath, projectName);
+		
+		ArticleInfo articleInfo = new ArticleInfo();
+		String imgName = "";
 		//修改
 		if("" != ids && ids != null) {
 			int id = Integer.parseInt(ids);
-			ArticleInfo articleInfo = new ArticleInfo();
+			//ArticleInfo articleInfo = new ArticleInfo();
 			try {
 				articleInfo = articleService.findById(id);
 				//若文章内容是文件名的话，将文件里的内容读取出来
 				content = getContent(articleInfo.getContent(), filePath);
 				articleInfo.setContent("");
+				imgName = articleInfo.getPhoto();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			request.setAttribute("article", articleInfo);
 		}else {
+			imgName = defaultImg;
 			content = getContent("example.md", filePath);	
 		}
 		request.setAttribute("content", content);
+		request.setAttribute("imgName", imgName);
+		
 		
 		types = typeService.getAllTypes();
 		request.setAttribute("types", types);
@@ -135,18 +143,16 @@ public class AdminArticleEditController extends HttpServlet {
 			
 			String content = contentItem.getString("utf-8");
 			ids = id.getString("utf-8");
-			String imgPublicPath = "";
-			String imgPath = "";
-			String fileName = photo.getName();
+			String imgPath = this.getServletContext().getRealPath("/public/images/articleimg");		
 			String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
+			String imgPublicPath = articleService.getFilePath(imgPath, projectName);
+			String fileName = photo.getName();
 			String mdFileName = "";
 			
 			
 			//有选择图片上传
 			if(""!=fileName && fileName!=null) 
 			{
-				imgPath = this.getServletContext().getRealPath("/public/images/articleimg");
-				imgPublicPath = articleService.getFilePath(imgPath, projectName);
 				
 				fileName = articleService.uploadFile(photo, imgPublicPath); //uploadPhoto(photo, filePath);
 				articleService.uploadFile(photo, imgPath, fileName);
@@ -162,6 +168,23 @@ public class AdminArticleEditController extends HttpServlet {
 				//当用户未选择上传图片且文章为修改状态时，文章的图片保持不变
 				Article article = articleService.findById(Integer.parseInt(ids));
 				form.setPhoto(article.getPhoto());
+			}
+			else {
+				//添加文章时且没有选择文章配图，设置默认图片为文章配图
+				String suffix = defaultImg.substring(defaultImg.lastIndexOf("."));
+				String newPhotoName = articleService.renameFileByDate(suffix);
+				
+				//在.metadata里路径
+				String defaultPath = imgPath+File.separator+defaultImg;
+				String newPath = imgPath+File.separator+newPhotoName;
+				articleService.copyFile(defaultPath, newPath);
+				
+				//在public里的路径
+				defaultPath = imgPublicPath+File.separator+defaultImg;
+				newPath = imgPublicPath+File.separator+newPhotoName;
+				articleService.copyFile(defaultPath, newPath);
+				
+				form.setPhoto(newPhotoName);
 			}
 			
 			if(!"".equals(ids) && ids!=null) {
@@ -198,7 +221,6 @@ public class AdminArticleEditController extends HttpServlet {
 			if(ids == null || ids.length() == 0) {
 				message = articleService.addArticle(form);
 			}else {
-				
 				form.setId(Integer.parseInt(ids));
 				message = articleService.updateArticle(form,imgPath,imgPublicPath,contentPath,contentPublicPath);
 			} 

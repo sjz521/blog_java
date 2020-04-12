@@ -191,4 +191,29 @@ public class FileUtil {
 			file.mkdirs();
 		}
 	}
+	
+	/**
+	 * 复制文件
+	 * @param oldPath
+	 * @param oldFileName
+	 * @param newPath
+	 * @param newFileName
+	 */
+	public void copyFile(String oldPath,String newPath) {
+		try {
+			FileInputStream in = new FileInputStream(oldPath);
+			FileOutputStream out = new FileOutputStream(newPath);
+			byte data[] = new byte[1024*8];
+			int len = 0;
+			while((len = in.read(data))!=-1) {
+				out.write(data,0,len);
+			}
+			in.close();
+			out.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

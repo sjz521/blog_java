@@ -72,7 +72,7 @@
 		                    </div>
 		
 		                    <div class="widget-body am-fr">
-		                        <form name="mdEditorForm" class="am-form tpl-form-border-form tpl-form-border-br form-left" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data">
+		                        <form name="mdEditorForm" class="am-form tpl-form-border-form tpl-form-border-br form-left" action="${pageContext.request.contextPath}/admin/article/edit" method="post" enctype="multipart/form-data" onsubmit="return check();">
 		                        	<input type="hidden" value="${article.id }" name="id">
 		                        	<!-- 文章标题 -->
 		                            <div class="am-form-group">
@@ -99,7 +99,7 @@
 		                                <div class="am-u-sm-9">
 		                                    <div class="am-form-group am-form-file">
 		                                        <div class="tpl-form-file-img">
-		                                            <img src="${pageContext.request.contextPath}/public/images/articleimg/${article.photo }" alt="" width="100px" height="100px" id="show">
+		                                            <img src="${pageContext.request.contextPath}/public/images/articleimg/${imgName }" alt="" width="100px" height="100px" id="show">
 		                                        </div>
 		                                        <button type="button" class="am-btn am-btn-danger am-btn-sm">
 		                                            <i class="am-icon-cloud-upload"></i> 添加封面图片
@@ -173,6 +173,23 @@
 						                document.getElementById("select_value").value=document.getElementById("typeId").value;
 						            }
 						            
+						            function check(){
+						                if(mdEditorForm.title.value==""){
+						                    alert("请输入文章标题");
+						                    mdEditorForm.title.focus();
+						                    return false;
+						                }
+						                /*if(mdEditorForm.photo.value==""){
+						                    alert("请选择文章配图");
+						                    mdEditorForm.photo.focus();
+						                    return false;
+						                }*/
+						                if (mdEditorForm.introduction.value==""){
+						                    alert("请输入文章简介");
+						                    mdEditorForm.introduction.focus();
+						                    return false;
+						                }
+						            }     
 						            
 						        </script>
 						    </div>
@@ -207,6 +224,8 @@
     			toolbarAutoFixed:true,//工具栏自动固定定位的开启与禁用
     		});
     	});
+    	
+    	
     </script>
     
 </body>

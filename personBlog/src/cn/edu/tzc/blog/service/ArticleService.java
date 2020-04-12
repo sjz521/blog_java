@@ -125,9 +125,10 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 * @throws ArticleException
 	 */
-	public String deleteArticle(int id,String path) {
+	public String deleteArticle(int id,String path,String publicPath) {
 		Article article = articleDao.findById(id);
 		boolean fileResult = delFile(path, article.getPhoto());
+		fileResult = delFile(publicPath, article.getPhoto());
 		if(!fileResult) {
 			return "文章相关图片删除失败";
 		}
@@ -145,10 +146,11 @@ public class ArticleService extends FileUtil {
 	 * @return
 	 * @throws ArticleException
 	 */
-	public String deleteAllArticle(int uId,String path) throws ArticleException {
+	public String deleteAllArticle(int uId,String path,String publicPath) throws ArticleException {
 		List<ArticleInfo> articles = articleDao.getAll(uId);
 		for (ArticleInfo articleInfo : articles) {
 			delFile(path, articleInfo.getPhoto());
+			delFile(publicPath, articleInfo.getPhoto());
 		}
 		boolean result = articleDao.deleteAll(uId);
 		if(result) {
@@ -225,11 +227,12 @@ public class ArticleService extends FileUtil {
 	 * @param ids
 	 * @return
 	 */
-	public String delCheck(String[] ids,String path) {
+	public String delCheck(String[] ids,String path,String publicPath) {
 		//1.删除文件
 		for (String id : ids) {
 			ArticleInfo article = articleDao.findById(Integer.parseInt(id));
 			delFile(path, article.getPhoto());
+			delFile(publicPath, article.getPhoto());
 		}
 		
 		//2.删除数据

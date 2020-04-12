@@ -69,7 +69,7 @@
 					<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 						<div class="widget am-cf">
 							<div class="widget-head am-cf">
-								<div class="widget-title  am-cf">用户列表
+								<div class="widget-title  am-cf">标签列表
 								</div>
 							</div>
 							<div class="widget-body  am-fr">
@@ -164,7 +164,7 @@
 													<td class="am-text-middle"><input type="checkbox" class="all" name="all" value="${type.id}"></td>
 													<td class="am-text-middle">${type.name }</td>
 													<td class="am-text-middle">${type.created_at }</td>
-													<td class="am-text-middle">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/admin/article?tid=${type.id}">${type.articleCount }</a></td>
+													<td class="am-text-middle">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/admin/article?tid=${type.id}" >${type.articleCount }</a></td>
 													<td class="am-text-middle">
 														<div class="tpl-table-black-operation"> 
 															<a href="javascript:void(0);" onclick="delType(${type.id})" class="tpl-table-black-operation-del">

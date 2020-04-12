@@ -113,7 +113,8 @@ public class MessageDao {
 		try {
 			PreparedStatement prep = connection.prepareStatement("delete from message where id=?");
 			prep.setInt(1, id);
-			result = prep.execute();
+			prep.execute();
+			result = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -237,7 +238,7 @@ public class MessageDao {
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select m.*,u.name as name,a.title as title from message m left join user u on m.uid=u.id left join article a on m.aid=a.id limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select m.*,u.name as name,a.title as title from message m left join user u on m.uid=u.id left join article a on m.aid=a.id order by created_at desc limit ?,?");
 			prep.setInt(1, pageIndex*pageSize);
 			prep.setInt(2, pageSize);
 			ResultSet rs = prep.executeQuery();
@@ -274,7 +275,7 @@ public class MessageDao {
 		List<MessageInfo> messages = new ArrayList<MessageInfo>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select m.*,u.name as name,a.title as title from message m left join user u on m.uid=u.id left join article a on m.aid=a.id where aId=? limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select m.*,u.name as name,a.title as title from message m left join user u on m.uid=u.id left join article a on m.aid=a.id where aId=? order by created_at desc limit ?,?");
 			prep.setInt(1, aId);
 			prep.setInt(2, pageIndex*pageSize);
 			prep.setInt(3, pageSize);

@@ -17,7 +17,7 @@ public class RegisterController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf8");
-		request.getRequestDispatcher("view/admin/register.jsp").forward(request, response);
+		request.getRequestDispatcher("view/register.jsp").forward(request, response);
 	}
 	
 	@Override
@@ -38,13 +38,13 @@ public class RegisterController extends HttpServlet {
 		} catch (UserException e) {
 			//获取异常并保存到request域
 			request.setAttribute("msg", e.getMessage());
-			request.getRequestDispatcher("/view/admin/register.jsp").forward(request, response);
+			request.getRequestDispatcher("/view/register.jsp").forward(request, response);
 			return;
 		}
 		/*PrintWriter pw = response.getWriter();
 		pw.println("<script>alert('注册成功')</script>");*/
 		request.setAttribute("msg", message);
-		request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+		request.getRequestDispatcher("/view/login.jsp").forward(request, response);
 		
 	}
 }

@@ -78,7 +78,7 @@
 		                                    <div class="am-btn-group am-btn-group-xs">
 		                                        <script type="text/javascript">
 		                                            function delAllMessage(){
-		                                                    var con = confirm("是否确认全部删除！！！");
+		                                                    var con = confirm("是否确认删除全部图片！！！");
 		                                                    if(con==true){
 		                                                        location.href = "${pageContext.request.contextPath }/admin/photo/delete";
 		                                                    }else{
@@ -88,7 +88,7 @@
 		                                                }
 		
 		                                            function delMessage(a){
-		                                                var con = confirm("是否确认删除这条数据???");
+		                                                var con = confirm("是否确认删除这张图片???");
 		                                                if(con==true){
 		                                                    location.href = "${pageContext.request.contextPath }/admin/photo/delete?id="+a;
 		                                                }else{
@@ -98,7 +98,7 @@
 		                                            
 		                                          //删除勾选
 													function delChecked(){
-														var flag = confirm("确认要删除全部勾选的文章吗？");
+														var flag = confirm("确认要删除全部勾选的图片吗？");
 														if(flag){
 															var s='';
 															$('input[name="all"]:checked').each(function(){
@@ -131,23 +131,6 @@
 														});
 													});
 													
-													
-													/*$("#delChecked").click(function(){
-														var flag = confirm("确认要删除全部勾选的文章吗？");
-														if(flag){
-															var s='';
-															$('input[name="all"]:checked').each(function(){
-																s+=$(this).val()+',';//遍历得到所有的checkbox的value
-															});
-															if(s.length > 0){
-																//删除多出来的，
-																s = s.substring(0,s.length-1);
-															}
-															//生成连接
-															location.href = "${pageContext.request.contextPath }/admin/photo/delete?id="+s;
-														}
-														
-													});*/
 		                                            
 		                                        </script>
 		                                        <button type="button" class="am-btn am-btn-default am-btn-success">
@@ -181,8 +164,8 @@
 		                                    <c:forEach items="${page.list }" var="photo">
 		                                    	<tr class="gradeX">
 			                                    	<td><input type="checkbox" class="all" name="all" value="${photo['id']}"></td>
-			                                        <td><img src="../public/images/photos/${photo['name'] }" class="tpl-table-line-img"></td>
-			                                        <td>${photo['name'] }</td>
+			                                        <td><img src="${pageContext.request.contextPath }/public/images/photos/${photo['name'] }" class="tpl-table-line-img"></td>
+			                                        <td>${photo['realName'] }</td>
 			                                        <td>${photo['userName'] }</td>
 			                                        <td>${photo['created_at'] }</td>
 			                                        <td>

@@ -61,6 +61,13 @@ public class AdminArticleController extends HttpServlet {
 			else {
 				page = articleService.findArticleWithPageByTid(pageIndex, pageSize, user.getId(), tId);
 			}
+			if(page.getList().size()<=0) {
+				PrintWriter pw = response.getWriter();
+				String url = request.getContextPath()+"/admin/type?method=show";
+				pw.println("<html><body><script language='javascript'>alert('该分类下没有文章');window.location.href='"+url+"';</script></body></html>");
+				pw.close();
+				return;
+			}
 		}else {
 			if(""!=keyWords && keyWords != null) {
 				keyWords.trim();

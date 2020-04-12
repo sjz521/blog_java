@@ -21,6 +21,7 @@ import org.w3c.dom.ls.LSInput;
 
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.UserService;
+import cn.edu.tzc.blog.util.MD5Util;
 
 /**
  * Servlet implementation class AdminPersonDataController
@@ -62,17 +63,20 @@ public class AdminPersonDataController extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
+		UserService service = new UserService();
+		User user = new User();
+		
 		String method = request.getParameter("method");
 		if("password".equals(method)) {
 			//1.获得邮箱和密码
 			String email = request.getParameter("email");
 			String password = request.getParameter("newPassword");
 			//2.更新密码
-			UserService service = new UserService();
-			User user = service.getUserByEmail(email);
+			user = service.getUserByEmail(email);
 			user.setPassword(password);
 			String message = service.updateUser(user);
 			request.setAttribute("message", message);
+			
 		}
 		else {
 			try {
@@ -86,12 +90,11 @@ public class AdminPersonDataController extends HttpServlet {
 				FileItem photo = list.get(3);
 				String introduction = list.get(4).getString("utf-8");
 				
-				UserService service = new UserService();
-				User user = service.getUserByEmail(email);
+				user = service.getUserByEmail(email);
 				user.setName(name);
 				user.setIntroduction(introduction);
-				
-				if(photo!=null) {
+				String photoName = photo.getName();
+				if(photoName!=null && !"".equals(photoName)) {
 					String path = this.getServletContext().getRealPath("/public/images/headimg");
 					service.judgeFile(path);
 					String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
@@ -109,11 +112,14 @@ public class AdminPersonDataController extends HttpServlet {
 				}
 				String message = service.updateUser(user);
 				request.setAttribute("message", message);
-				request.getSession().setAttribute("user", user);
+				
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
+		}
+		if(user.getEmail()!=null && !"".equals(user.getEmail())) {
+			request.getSession().setAttribute("user", user);
 		}
 		doGet(request, response);
 	}

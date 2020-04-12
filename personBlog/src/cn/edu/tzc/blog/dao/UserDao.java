@@ -137,6 +137,88 @@ public class UserDao {
 	}
 	
 	/**
+	 * 删除用户
+	 * @param id
+	 * @return
+	 */
+	public boolean deleteUser(int id) {
+		boolean result = false;
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement("delete from user where id=?");
+			prep.setInt(1, id);
+			prep.execute();
+			result = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 删除多个用户
+	 * @param ids
+	 * @return
+	 */
+	public boolean deleteUsers(String[] ids) {
+		boolean result = false;
+		
+		//1.处理sql语句
+		StringBuilder sb = new StringBuilder();
+		sb.append("delete from user where id in (");
+		int[] params = new int[ids.length];
+		for (int i=0;i<ids.length;i++) {
+			params[i] = Integer.parseInt(ids[i]);
+			if(i == ids.length-1) {
+				sb.append("?");
+			}else {
+				sb.append("?,");
+			}
+		}
+		sb.append(")");
+		//2.运行语句
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement(sb.toString());
+			for(int i=0;i<params.length;i++) {
+				prep.setInt(i+1, params[i]);
+			}
+			int n = prep.executeUpdate();
+			if(n>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 删除除博主以外的所有用户
+	 * @return
+	 */
+	public boolean deleteAllUser() {
+		boolean result = true;
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement("delete from user where role=1");
+			result = prep.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		return result;	
+	}
+	
+	
+	/**
 	 * 修改用户最近登录时间
 	 * @param userId
 	 */
@@ -178,9 +260,9 @@ public class UserDao {
 			result = false;
 			e.printStackTrace();
 		}finally {
-			DBUtil.close(connection);
-			return result;
+			DBUtil.close(connection);	
 		}
+		return result;
 	}
 	
 	/**
@@ -239,7 +321,7 @@ public class UserDao {
 		List<User> users = new ArrayList<User>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select * from user where role=1 limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select * from user where role=1 order by created_at desc limit ?,?");
 			prep.setInt(1, pageIndex*pageSize);
 			prep.setInt(2, pageSize);
 			ResultSet rs = prep.executeQuery();

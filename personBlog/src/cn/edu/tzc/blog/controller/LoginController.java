@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
 			return;
 		}
 		
-		request.getRequestDispatcher("view/admin/login.jsp").forward(request, response);
+		request.getRequestDispatcher("view/login.jsp").forward(request, response);
 	}
 	
 	@Override
@@ -43,8 +43,8 @@ public class LoginController extends HttpServlet {
 		String sessionCode = (String) request.getSession().getAttribute("session_vcode");
 		String paramCode = request.getParameter("verifyCode");
 		if(!paramCode.equalsIgnoreCase(sessionCode)) {
-			request.setAttribute("msg", "验证码错误");
-			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+			request.setAttribute("msg", "验证码错误！！！");
+			request.getRequestDispatcher("/view/login.jsp").forward(request, response);
 			return;
 		}
 		
@@ -93,7 +93,7 @@ public class LoginController extends HttpServlet {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			request.setAttribute("msg", e.getMessage());
-			request.getRequestDispatcher("/view/admin/login.jsp").forward(request, response);
+			request.getRequestDispatcher("/view/login.jsp").forward(request, response);
 			return;
 		}
 	}

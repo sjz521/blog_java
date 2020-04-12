@@ -63,25 +63,64 @@
 											<div class="am-btn-toolbar">
 												<div class="am-btn-group am-btn-group-xs">
 													<script type="text/javascript">
-															function delAllMessage(){
-																var con = confirm("是否确认全部删除！！！");
+															function delAllUser(){
+																var con = confirm("是否确认删除全部用户！！！");
 																if(con==true){
-																	location.href = "index.php?r=adminHome/deleteAllUser&u_id=<?=$uid?>";
+																	location.href = "${pageContext.request.contextPath}/admin/user?method=delete";
 																}else{
 																	return false;
 																}
 															}
 															function delUser(a){
-					                                            var con = confirm("是否确认删除这条数据???");
+					                                            var con = confirm("是否确认删除这个用户???");
 					                                            if(con==true){
-					                                                location.href = "index.php?r=adminHome/deleteUser&u_id="+a;
+					                                                location.href = "${pageContext.request.contextPath}/admin/user?method=delete&id="+a;
 					                                            }else{
 					                                            	return false;
 					                                            }
 				                                        	}
+															
+															//删除勾选
+															function delChecked(){
+																var flag = confirm("确认要删除全部勾选的用户吗？");
+																if(flag){
+																	var s='';
+																	$('input[name="all"]:checked').each(function(){
+																		s+=$(this).val()+',';//遍历得到所有的checkbox的value
+																	});
+																	if(s.length > 0){
+																		//删除多出来的，
+																		s = s.substring(0,s.length-1);
+																	}
+																	//生成连接
+																	location.href = "${pageContext.request.contextPath }/admin/user?method=delete&id="+s;
+																}
+																else{
+																	return false;
+																}
+															}
+															
+															//全选全不选
+															$(function(){
+																$("#all").click(function(){
+																	if(this.checked==true){
+																		$(".all").each(function(){
+																			this.checked=true;
+																		});
+																	}else{
+																		$(".all").each(function(){
+																			this.checked=false;
+																		});
+																	}
+																});
+															});
+															
 													</script>
-													<button type="button" onclick="delAllMessage();" class="am-btn am-btn-default am-btn-danger">
+													<button type="button" onclick="delAllUser();" class="am-btn am-btn-default am-btn-danger">
 														<span class="am-icon-trash-o"></span> 删除全部
+													</button>
+													<button type="button" onclick="delChecked();" class="am-btn am-btn-default am-btn-secondary">
+														<span class="am-icon-trash-o"></span> 删除勾选
 													</button>
 												</div>
 											</div>
@@ -93,6 +132,7 @@
 											class="am-table am-table-compact am-table-striped tpl-table-black ">
 											<thead>
 												<tr>
+													<th><input type="checkbox" id="all"/></th>
 													<th>邮箱</th>
 													<th>用户名</th>
 													<th>头像</th>
@@ -104,6 +144,7 @@
 												<!-- 循环开始 -->
 													<c:forEach items="${page.list }" var="u">
 														<tr class="gradeX">
+															<td><input type="checkbox" class="all" name="all" value="${u.id}"></td>
 															<td class="am-text-middle">${u.email }</td>
 															<td class="am-text-middle">${u.name }</td>
 															<td><img src="${pageContext.request.contextPath}/public/images/headimg/${u.photo }" class="tpl-table-line-img"
@@ -111,7 +152,7 @@
 															<td class="am-text-middle">${u.lasttime }</td>
 															<td class="am-text-middle">
 																<div class="tpl-table-black-operation"> 
-																	<a href="javascript:void(0);" onclick="delUser(<?=$value['ID']?>)" class="tpl-table-black-operation-del"> 
+																	<a href="javascript:void(0);" onclick="delUser(${u.id})" class="tpl-table-black-operation-del"> 
 																		<i class="am-icon-trash"></i>删除 
 																	</a>
 																</div>

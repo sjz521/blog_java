@@ -75,7 +75,7 @@ public class TypeDao {
 		List<TypeInfo> types = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select t.*,ifnull(a.num,0) as num from type t left join (select count(*) as num,tid from article group by tid order by num) a on a.tid = t.id limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select t.*,ifnull(a.num,0) as num from type t left join (select count(*) as num,tid from article group by tid order by num) a on a.tid = t.id order by created_at desc limit ?,?");
 			prep.setInt(1, pageIndex*pageSize);
 			prep.setInt(2, pageSize);
 			ResultSet rs = prep.executeQuery();

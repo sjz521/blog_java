@@ -117,7 +117,7 @@
                                             <c:forEach items="${photos }" var="photo">
                                             	<tr class="gradeX">
                                                     <td>
-                                                        <img src="${pageContext.request.contextPath }/public/images/photos/${photo.name}" width="100px" height="100px">
+                                                        <img src="${pageContext.request.contextPath }/public/images/photos/${photo.name }" width="100px" height="100px">
                                                     </td>
                                                     <td>${photo.userName }</td>
                                                     <td>${photo.created_at }</td>

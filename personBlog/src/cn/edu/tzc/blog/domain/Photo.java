@@ -1,5 +1,8 @@
 package cn.edu.tzc.blog.domain;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 public class Photo {
@@ -7,7 +10,8 @@ public class Photo {
 	private String name;
 	private Timestamp created_at;
 	private int uId;
-	
+	private String realName;
+
 	public Photo() {
 		super();
 	}
@@ -34,6 +38,7 @@ public class Photo {
 
 	public void setName(String name) {
 		this.name = name;
+		setRealName();
 	}
 
 	public Timestamp getCreated_at() {
@@ -50,6 +55,22 @@ public class Photo {
 
 	public void setuId(int uId) {
 		this.uId = uId;
+	}
+	
+	public String getRealName() {
+		return realName;
+	}
+
+	private void setRealName() {
+		//解决图片名字为中文时不显示的问题
+		try {
+			String tmpStr = this.name.replace("-", "%");
+			this.realName = URLDecoder.decode(tmpStr,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

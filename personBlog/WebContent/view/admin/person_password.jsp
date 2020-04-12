@@ -74,10 +74,6 @@
             		$("#confirmPassword").attr("disabled","disabled");
             	}
             	else{
-            		var pwd = hex_md5(password);
-                	$("#oldPassword").val(pwd);
-                	password = pwd;
-                	
             		if(password != obj){
             			$("#tishi1").html("原始密码错误");
                 		$("#tishi1").css("color","red");
@@ -160,7 +156,7 @@
 										<div class="am-form-group">
 			                                <label for="user-phone" class="am-u-sm-3 am-form-label">请输入新的密码 <span class="tpl-form-line-small-title"></span></label>
 			                                <div class="am-u-sm-9">
-			                                     <input type="password" class="tpl-form-input" id="newPassword" value="" name="newPassword" placeholder="密码">
+			                                     <input type="password" class="tpl-form-input" id="newPassword" value="" name="newPassword" placeholder="密码" onkeyup="validate()">
 			                                </div>
 			                            </div>
 			

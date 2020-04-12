@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -86,12 +87,12 @@ public class AdminPhotoEditController extends HttpServlet {
 			int uId = Integer.parseInt(list.get(0).getString("utf-8"));//获得uId
 			FileItem image = list.get(2);//上传的图片
 			String fileName = list.get(3).getString("utf-8");
+			String tmpStr = URLEncoder.encode(fileName,"UTF-8");
+			fileName = tmpStr.replace("%", "-");
 			
 			String path = this.getServletContext().getRealPath("/public/images/photos");
 			String projectName = request.getServletContext().getContextPath().replaceAll("/", "");
-			int beginIndex = path.indexOf(projectName);
-			int endIndex = path.lastIndexOf(projectName);
-			String filePath = path.substring(0, beginIndex+projectName.length()+1)+projectName+"/WebContent//"+path.substring(endIndex+projectName.length()+1);
+			String filePath = service.getFilePath(path, projectName);
 			
 			service.uploadFile(image, path,fileName);
 			boolean fileResult =service.uploadFile(image, filePath, fileName);

@@ -1,5 +1,7 @@
 package cn.edu.tzc.blog.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.interfaces.RSAKey;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,7 +60,7 @@ public class PhotoDao {
 		List<PhotoInfo> photos = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select p.*,u.name as author from photo p left join user u on u.id=p.uId where p.uId=?");
+			PreparedStatement prep = connection.prepareStatement("select p.*,u.name as author from photo p left join user u on u.id=p.uId where p.uId=? order by created_at desc");
 			prep.setInt(1, uId);
 			ResultSet rs = prep.executeQuery();
 			while(rs.next()) {
@@ -68,9 +70,10 @@ public class PhotoDao {
 				photo.setCreated_at(rs.getTimestamp("created_at"));
 				photo.setuId(rs.getInt("uId"));
 				photo.setUserName(rs.getString("author"));
+				
 				photos.add(photo);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
@@ -249,7 +252,7 @@ public class PhotoDao {
 		List<PhotoInfo> photos = new ArrayList<>();
 		Connection connection = DBUtil.getConnection();
 		try {
-			PreparedStatement prep = connection.prepareStatement("select p.*,u.name as author from photo p left join user u on u.id=p.uId where p.uId=? limit ?,?");
+			PreparedStatement prep = connection.prepareStatement("select p.*,u.name as author from photo p left join user u on u.id=p.uId where p.uId=? order by created_at desc limit ?,?");
 			prep.setInt(1, uId);
 			prep.setInt(2, pageIndex*pageSize);
 			prep.setInt(3, pageSize);
@@ -263,7 +266,7 @@ public class PhotoDao {
 				photo.setUserName(rs.getString("author"));
 				photos.add(photo);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
