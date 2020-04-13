@@ -99,7 +99,7 @@
 														
 														//删除勾选
 														function delCheck(){
-															var flag = confirm("确认要删除全部勾选的文章吗？");
+															var flag = confirm("确认要删除全部勾选的标签吗？？？删除后相应的文章也会删除");
 															if(flag){
 																var s='';
 																$('input[name="all"]:checked').each(function(){

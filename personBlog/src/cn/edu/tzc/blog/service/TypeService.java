@@ -67,7 +67,7 @@ public class TypeService {
 	 */
 	public String deleteType(int id) {
 		Type type = typeDao.getTypeById(id);
-		String message = "分类"+type.getName();
+		String message = "标签:"+type.getName();
 		boolean result = typeDao.deleteType(id);
 		if(result) {
 			message += "删除成功";

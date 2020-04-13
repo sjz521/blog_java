@@ -55,6 +55,7 @@ public class AdminArticleDeleteController extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			pw.println("<html><body><script language='javascript'>alert('"+e.getMessage()+"');window.location.href='"+url+"';</script></body></html>");
+			pw.close();
 			return;
 		}
 	}

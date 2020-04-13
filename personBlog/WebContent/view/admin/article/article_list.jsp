@@ -106,7 +106,7 @@
 														}
 													//删除单篇文章
 													function delArticle(a){
-					                                    var con = confirm("是否确认删除这条数据???");
+					                                    var con = confirm("是否确认删除这篇文章？？？");
 					                                    if(con==true){
 					                                        location.href = "${pageContext.request.contextPath }/admin/article/delete?id="+a;
 					                                    }else{

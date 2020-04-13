@@ -81,6 +81,7 @@ public class AdminTypeController extends HttpServlet {
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}
+		pw.close();
 	}
 
 	/**
