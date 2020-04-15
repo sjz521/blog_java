@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import cn.edu.tzc.blog.service.UserService;
 import cn.edu.tzc.blog.service.exception.UserException;
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf8");

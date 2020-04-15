@@ -3,14 +3,18 @@ package cn.edu.tzc.blog.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.edu.tzc.blog.dao.MessageDao;
 import cn.edu.tzc.blog.domain.Message;
 import cn.edu.tzc.blog.domain.MessageInfo;
 import cn.edu.tzc.blog.domain.Page;
+import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.exception.MessageException;
 
 public class MessageService {
 	private MessageDao dao = new MessageDao();
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 获得所有留言数
@@ -30,9 +34,13 @@ public class MessageService {
 	 */
 	public String addMessage(Message reply) {
 		boolean result = dao.addMessage(reply);
+		UserService userService = new UserService();
+		User user = userService.findUserById(reply.getuId());
 		if(result) {
+			logger.info(user.getEmail()+"添加留言成功");
 			return "留言添加成功";
 		}else {
+			logger.info(user.getEmail()+"添加留言失败");
 			return "留言添加失败";
 		}
 	}
@@ -45,8 +53,10 @@ public class MessageService {
 	public String deleteMessage(int id) {
 		boolean result = dao.deleteMessage(id);
 		if(result) {
+			logger.info("留言删除成功");
 			return "删除成功";
 		}else {
+			logger.info("留言删除失败");
 			return "删除失败";
 		}
 	}
@@ -58,9 +68,11 @@ public class MessageService {
 	public String deleteAllMessage() {
 		boolean result = dao.deleteAllMessage();
 		if(result) {
+			logger.info("所有留言删除成功");
 			return "删除成功";
 		}
 		else {
+			logger.info("所有留言删除失败");
 			return "删除失败";
 		}
 	}
@@ -73,8 +85,10 @@ public class MessageService {
 	public String deleteChecked(String[] ids) {
 		boolean result = dao.deleteMessages(ids);
 		if(result) {
+			logger.info("部分留言删除成功");
 			return "删除成功";
 		}
+		logger.info("部分留言删除失败");
 		return "删除失败";
 	}
 	

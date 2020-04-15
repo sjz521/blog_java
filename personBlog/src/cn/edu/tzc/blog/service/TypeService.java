@@ -3,6 +3,8 @@ package cn.edu.tzc.blog.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.edu.tzc.blog.dao.TypeDao;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.Type;
@@ -10,8 +12,8 @@ import cn.edu.tzc.blog.domain.TypeInfo;
 import cn.edu.tzc.blog.service.exception.TypeException;
 
 public class TypeService {
-	
 	private TypeDao typeDao = new TypeDao();
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 返回所有分类
@@ -52,10 +54,12 @@ public class TypeService {
 		boolean result = typeDao.addType(type);
 		String message = "";
 		if(result) {
-			message = "添加分类成功";
+			logger.info("标签"+type.getName()+"添加成功");
+			message = "添加标签成功";
 		}
 		else {
-			message = "添加分类失败";
+			logger.error("标签"+type.getName()+"添加失败");
+			message = "添加标签失败";
 		}
 		return message;
 	}
@@ -70,8 +74,10 @@ public class TypeService {
 		String message = "标签:"+type.getName();
 		boolean result = typeDao.deleteType(id);
 		if(result) {
+			logger.info("标签"+type.getName()+"删除成功");
 			message += "删除成功";
 		}else {
+			logger.error("标签"+type.getName()+"删除失败");
 			message += "删除失败";
 		}
 		return message;
@@ -85,9 +91,11 @@ public class TypeService {
 		boolean result = typeDao.deleteAll();
 		String message = "";
 		if(result) {
-			message = "全部分类删除成功";
+			logger.info("全部标签删除成功");
+			message = "全部标签删除成功";
 		}else {
-			message = "全部分类删除失败";
+			logger.error("全部标签删除失败");
+			message = "全部标签删除失败";
 		}
 		return message;
 	}
@@ -111,15 +119,17 @@ public class TypeService {
 	}
 	
 	/**
-	 * 删除多篇文章
+	 * 删除多篇标签
 	 * @param ids
 	 * @return
 	 */
 	public String delChecked(String[] ids) {
 		boolean result = typeDao.deleteTypes(ids);
 		if(result) {
+			logger.info("部分标签删除成功");
 			return "删除成功";
 		}
+		logger.error("部分标签删除失败");
 		return "删除失败";
 	}
 }

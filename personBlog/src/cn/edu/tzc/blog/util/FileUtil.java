@@ -15,9 +15,11 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 
 public class FileUtil {
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 文件上传
@@ -40,9 +42,11 @@ public class FileUtil {
 			in.close();
 			out.close();
 			result = true;
+			logger.info("文件"+fileName+"上传成功");
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			logger.info("文件"+fileName+"上传失败");
 			result = false;
 		}
 		return result;
@@ -57,9 +61,11 @@ public class FileUtil {
 	public String uploadFile(FileItem fileItem,String path) {
 		String fileName = fileItem.getName();
 		if("" == fileName || fileName == null) {
+			logger.error("没有文件名，文件不能上传");
 			return null;
 		}
 		if(fileName.lastIndexOf(".") == -1) {
+			logger.error("没有后缀名，文件不能上传");
 			return null;
 		}
 		String suffix = fileName.substring(fileName.lastIndexOf("."));
@@ -69,10 +75,13 @@ public class FileUtil {
 			fileName = new String(b,"utf-8");
 			boolean result = uploadFile(fileItem, path, fileName);
 			if (!result) {
+				logger.error("文件上传失败");
 				return null;
 			}
+			logger.info("文件上传成功");
 		} catch (Exception e) {
 			// TODO: handle exception
+			logger.error("文件上传失败，原因是："+e.getMessage());
 			return null;
 		}
 		

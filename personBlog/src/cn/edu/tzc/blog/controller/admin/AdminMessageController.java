@@ -23,6 +23,7 @@ import cn.edu.tzc.blog.service.MessageService;
 @WebServlet("/admin/message")
 public class AdminMessageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

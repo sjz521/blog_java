@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.print.attribute.standard.MediaSize.ISO;
 
+import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.eclipse.jdt.internal.compiler.lookup.VariableBinding;
 
@@ -19,6 +20,7 @@ import cn.edu.tzc.blog.util.FileUtil;
 
 public class ArticleService extends FileUtil {
 	private ArticleDao articleDao = new ArticleDao();
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 获得全部文章
@@ -87,8 +89,10 @@ public class ArticleService extends FileUtil {
 	public String addArticle(Article article) {
 		boolean result = articleDao.addArticle(article);
 		if(result) {
+			logger.info("文章—"+article.getTitle()+"添加成功");
 			return "文章添加成功";
 		}else {
+			logger.info("文章—"+article.getTitle()+"添加失败");
 			return "文章添加失败";
 		}
 	}
@@ -113,8 +117,10 @@ public class ArticleService extends FileUtil {
 		}
 		boolean result = articleDao.updateArticle(article);
 		if(result) {
+			logger.info("文章—"+article.getTitle()+"修改成功");
 			return "文章修改成功";
 		}else {
+			logger.info("文章—"+article.getTitle()+"修改失败");
 			return "文章修改失败";
 		}
 	}
@@ -134,8 +140,10 @@ public class ArticleService extends FileUtil {
 		}
 		boolean result = articleDao.deleteArticle(id);
 		if(result) {
+			logger.info("文章—"+article.getTitle()+"删除成功");
 			return "删除成功";
 		}else {
+			logger.info("文章—"+article.getTitle()+"删除失败");
 			return "删除失败";
 		}
 	}
@@ -154,8 +162,10 @@ public class ArticleService extends FileUtil {
 		}
 		boolean result = articleDao.deleteAll(uId);
 		if(result) {
+			logger.info("全部文章删除成功");
 			return "删除成功";
 		}else {
+			logger.info("全部文章删除失败");
 			return "删除失败";
 		}
 	}
@@ -238,8 +248,10 @@ public class ArticleService extends FileUtil {
 		//2.删除数据
 		boolean result = articleDao.deleteArticles(ids);
 		if(result) {
+			logger.info("部分文章删除成功");
 			return "删除成功";
 		}else {
+			logger.info("部分文章删除失败");
 			return "删除失败";
 		}
 	}

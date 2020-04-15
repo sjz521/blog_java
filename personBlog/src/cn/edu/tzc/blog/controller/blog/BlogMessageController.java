@@ -19,7 +19,6 @@ import cn.edu.tzc.blog.service.MessageService;
 @WebServlet("/blog/message")
 public class BlogMessageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.swing.LookAndFeel;
+
+import org.apache.log4j.Logger;
+
 import cn.edu.tzc.blog.dao.UserDao;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
@@ -18,6 +22,7 @@ public class UserService extends FileUtil {
 	//private UserDao userDao = new UserDao();
 	private UserDao userDao = new UserDao();
 	private MD5Util md5Util = new MD5Util();
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 按邮箱查找用户
@@ -57,9 +62,11 @@ public class UserService extends FileUtil {
 		//2.用户注册
 		boolean result = userDao.addUser(email, username, password);
 		if(result) {
+			logger.info(email+"注册成功");
 			return "注册成功";
 		}
 		else {
+			logger.info(email+"注册失败");
 			return "注册失败";
 		}
 	}
@@ -84,9 +91,10 @@ public class UserService extends FileUtil {
 		}
 		user.setPassword(md5Util.getMD5String(user.getPassword()));
 		if(!user.getPassword().equals(password)) {
-			 throw new UserException("密码错误！！！");
+			throw new UserException("密码错误！！！");
 		}
 		userDao.updateUserLoginTime(user.getId());
+		logger.info(email+"登录成功");
 		return user;
 	}
 	
@@ -98,6 +106,7 @@ public class UserService extends FileUtil {
 		//User oldUser =  userDao.findByEmail(user.getEmail());
 		boolean result = userDao.updateUser(user);
 		if(result) {
+			logger.info(user.getEmail()+"的个人信息修改成功");
 			return "修改成功";
 		}else {
 			return "修改失败";
@@ -110,10 +119,13 @@ public class UserService extends FileUtil {
 	 * @return
 	 */
 	public String deleteUser(int id) {
+		User user = userDao.findById(id);
 		boolean result = userDao.deleteUser(id);
 		if(result) {
+			logger.info("用户"+user.getEmail()+"删除成功");
 			return "用户删除成功";
 		}else {
+			logger.info("用户"+user.getEmail()+"删除失败");
 			return "用户删除失败";
 		}
 	}
@@ -127,8 +139,10 @@ public class UserService extends FileUtil {
 		String[] ids = id.split(",");
 		boolean result = userDao.deleteUsers(ids);
 		if(result) {
+			logger.info("多个用户删除成功");
 			return "用户删除成功";
 		}else {
+			logger.info("多个用户删除失败");
 			return "用户删除失败";
 		}
 	}
@@ -140,8 +154,10 @@ public class UserService extends FileUtil {
 	public String deleteAllUser() {
 		boolean result = userDao.deleteAllUser();
 		if(result) {
+			logger.info("除了博主外所有用户删除成功");
 			return "用户删除成功";
 		}else {
+			logger.info("除了博主外所有用户删除失败");
 			return "用户删除失败";
 		}
 	}

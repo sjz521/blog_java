@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.UserService;
 import cn.edu.tzc.blog.service.exception.UserException;
@@ -18,6 +20,7 @@ import cn.edu.tzc.blog.util.MD5Util;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -26,6 +29,7 @@ public class LoginController extends HttpServlet {
 		if(user != null) {
 			request.getSession().removeAttribute("user");
 			response.sendRedirect(request.getContextPath()+"/blog/home");
+			logger.info(user.getEmail()+"退出登录");
 			return;
 		}
 		

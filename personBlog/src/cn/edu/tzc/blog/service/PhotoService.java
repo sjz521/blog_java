@@ -3,6 +3,8 @@ package cn.edu.tzc.blog.service;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import cn.edu.tzc.blog.dao.PhotoDao;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.Photo;
@@ -12,7 +14,13 @@ import cn.edu.tzc.blog.util.FileUtil;
 
 public class PhotoService extends FileUtil {
 	private PhotoDao photoDao = new PhotoDao();
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
+	/**
+	 * 根据作者id获得所有图片
+	 * @param uId
+	 * @return
+	 */
 	public List<Photo> getAll(int uId) {
 		List<Photo> photos = photoDao.getAll(uId);
 		/*if(photos == null) {
@@ -21,6 +29,11 @@ public class PhotoService extends FileUtil {
 		return photos;
 	}
 	
+	/**
+	 * 根据作者id获得所有图片相关信息
+	 * @param uId
+	 * @return
+	 */
 	public List<PhotoInfo> getAllPhotos(int uId){
 		List<PhotoInfo> photos = photoDao.getAllInfo(uId);
 		/*if(photos == null) {
@@ -29,6 +42,11 @@ public class PhotoService extends FileUtil {
 		return photos;
 	}
 	
+	/**
+	 * 根据图片id获得图片
+	 * @param id
+	 * @return
+	 */
 	public Photo getPhotoById(int id) {
 		Photo photo =  photoDao.getPhotoById(id);
 		/*if(photo == null) {
@@ -55,8 +73,10 @@ public class PhotoService extends FileUtil {
 		}
 		boolean result = photoDao.deletePhoto(id);
 		if(result) {
+			logger.info("图片"+photo.getName()+"删除成功");
 			return "删除成功";
 		}else {
+			logger.error("图片"+photo.getName()+"删除失败");
 			return "删除失败";
 		}
 	}
@@ -82,8 +102,10 @@ public class PhotoService extends FileUtil {
 		}
 		boolean result = photoDao.deleteAllPhoto(uId);
 		if(result) {
+			logger.info("所有图片删除成功");
 			return "删除成功";
 		}else {
+			logger.error("所有图片删除失败");
 			return "删除失败";
 		}
 	}
@@ -107,17 +129,25 @@ public class PhotoService extends FileUtil {
 		//2.删除数据库记录
 		boolean result = photoDao.deletePhotos(ids);
 		if(result) {
+			logger.info("部分图片删除成功");
 			return "删除成功";
 		}
+		logger.info("部分图片删除失败");
 		return "删除失败";
 	}
 	
-	
+	/**
+	 * 添加图片
+	 * @param photo
+	 * @return
+	 */
 	public String addPhoto(Photo photo) {
 		boolean result = photoDao.addPhoto(photo);
 		if(result) {
+			logger.info("图片"+photo.getName()+"添加成功");
 			return "图片添加成功";
 		}else {
+			logger.error("图片"+photo.getName()+"添加失败");
 			return "图片添加失败";
 		}
 	}
