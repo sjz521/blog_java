@@ -326,10 +326,10 @@ public class ArticleDao {
 		sb.append("delete from article where id in (");
 		for (int i=0;i<ids.length;i++) {
 			params[i] = Integer.parseInt(ids[i]);
-			if(i == ids.length-1) {
+			if(i == 0) {
 				sb.append("?");
 			}else {
-				sb.append("?,");
+				sb.append(",?");
 			}
 		}
 		sb.append(")");
