@@ -46,6 +46,16 @@ public class ArticleService extends FileUtil {
 	}
 	
 	/**
+	 * 查找分类下的所有文章
+	 * @param tId
+	 * @param uId
+	 * @return
+	 */
+	public List<ArticleInfo> getArticlesByTid(int tId,int uId){
+		return articleDao.getArticlesByTid(tId, uId);
+	}
+	
+	/**
 	 * 获得分页下的文章数
 	 * @param uId
 	 * @param pageIndex
@@ -254,6 +264,17 @@ public class ArticleService extends FileUtil {
 			logger.info("部分文章删除失败");
 			return "删除失败";
 		}
+	}
+	
+	/**
+	 * 根据分类id删除文章
+	 * @param tId
+	 * @param uId
+	 */
+	public void deleteArticlesByTid(int tId,int uId) {
+		List<Integer> articleIds = articleDao.getArticleIdsByTid(tId, uId);
+		String[] ids = integerListToStrings(articleIds);
+		articleDao.deleteArticles(ids);
 	}
 	
 }

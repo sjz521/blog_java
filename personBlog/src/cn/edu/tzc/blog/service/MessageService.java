@@ -11,8 +11,9 @@ import cn.edu.tzc.blog.domain.MessageInfo;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.exception.MessageException;
+import cn.edu.tzc.blog.util.BasicUtil;
 
-public class MessageService {
+public class MessageService extends BasicUtil {
 	private MessageDao dao = new MessageDao();
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
@@ -90,6 +91,16 @@ public class MessageService {
 		}
 		logger.info("部分留言删除失败");
 		return "删除失败";
+	}
+	
+	/**
+	 * 删除某个用户的所有留言
+	 * @param uId
+	 */
+	public void deleteMessagesByUid(int uId) {
+		List<Integer> messageIds = dao.getMessageByUId(uId);
+		String[] ids = integerListToStrings(messageIds);
+		deleteChecked(ids);
 	}
 	
 	/**

@@ -70,14 +70,14 @@ public class AdminTypeController extends HttpServlet {
 			String ids = request.getParameter("id");
 			if(ids.contains(",")) {
 				String[] idList = ids.split(",");
-				message = service.delChecked(idList);
+				message = service.delChecked(idList,user.getId());
 			}else {
-				message = service.deleteType(Integer.parseInt(ids));
+				message = service.deleteType(Integer.parseInt(ids),user.getId());
 			}
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}else if(method.toLowerCase().equals("deleteAll")) {
-			String message = service.deleteAll();
+			String message = service.deleteAll(user.getId());
 			String url = request.getContextPath()+"/admin/type?method=show&pageIndex=0";
 			pw.println("<html><body><script language='javascript'>alert('"+message+"');window.location.href='"+url+"';</script></body></html>");
 		}

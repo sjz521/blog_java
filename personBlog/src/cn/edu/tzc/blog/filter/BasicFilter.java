@@ -86,7 +86,7 @@ public class BasicFilter implements Filter {
 				// blog/article，需要判断是否登录
 				if(user == null) {
 					PrintWriter pw = response.getWriter();
-					String url = request.getContextPath()+"/blog/home";
+					String url = request.getContextPath()+"/login";
 					pw.println("<html><body><script language='javascript'>alert('未登录不能查看文章具体内容。请先登录！！！');window.location.href='"+url+"';</script></body></html>");
 					pw.close();
 				}

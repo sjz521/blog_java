@@ -75,7 +75,7 @@ public class BlogArticleController extends HttpServlet {
 			e.printStackTrace();
 			request.setAttribute("Articleerror", "找不到该文章！！");
 		}
-		
+		request.setAttribute("isArrticle", true);
 		request.getRequestDispatcher("../view/blog/article_show.jsp").forward(request, response);
 	}
 }

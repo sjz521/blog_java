@@ -31,9 +31,10 @@ public class BlogPhotoController extends HttpServlet {
 		
 		int id = userService.findAdminId();
 		
-		String title = "登录";
 		User user = (User) request.getSession().getAttribute("user");
-		/*if(user != null) {
+		/*
+		String title = "登录";
+		if(user != null) {
 			title = user.getName()+"/退出登录";
 		}else {
 			
@@ -55,6 +56,7 @@ public class BlogPhotoController extends HttpServlet {
 		
 		Page<PhotoInfo> page = service.findPhotoWithPage(pageIndex, pageSize, id);
 		request.setAttribute("page", page);
+		request.setAttribute("isPhoto", true);
 		
 		request.getRequestDispatcher("../view/blog/photo_show.jsp").forward(request, response);
 		

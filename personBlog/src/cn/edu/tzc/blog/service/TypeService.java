@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import cn.edu.tzc.blog.dao.ArticleDao;
 import cn.edu.tzc.blog.dao.TypeDao;
+import cn.edu.tzc.blog.domain.ArticleInfo;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.Type;
 import cn.edu.tzc.blog.domain.TypeInfo;
@@ -14,6 +16,7 @@ import cn.edu.tzc.blog.service.exception.TypeException;
 public class TypeService {
 	private TypeDao typeDao = new TypeDao();
 	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private ArticleService articleService = new ArticleService();
 	
 	/**
 	 * 返回所有分类
@@ -69,12 +72,13 @@ public class TypeService {
 	 * @param id
 	 * @return
 	 */
-	public String deleteType(int id) {
+	public String deleteType(int id,int uId) {
 		Type type = typeDao.getTypeById(id);
 		String message = "标签:"+type.getName();
 		boolean result = typeDao.deleteType(id);
 		if(result) {
 			logger.info("标签"+type.getName()+"删除成功");
+			articleService.deleteArticlesByTid(id, uId);
 			message += "删除成功";
 		}else {
 			logger.error("标签"+type.getName()+"删除失败");
@@ -84,10 +88,32 @@ public class TypeService {
 	}
 	
 	/**
+	 * 删除多个分类
+	 * @param ids
+	 * @return
+	 */
+	public String delChecked(String[] ids,int uId) {
+		for (String id : ids) {
+			articleService.deleteArticlesByTid(Integer.parseInt(id), uId);
+		}
+		boolean result = typeDao.deleteTypes(ids);
+		if(result) {
+			logger.info("部分标签删除成功");
+			return "删除成功";
+		}
+		logger.error("部分标签删除失败");
+		return "删除失败";
+	}
+	
+	/**
 	 * 删除所有分类
 	 * @return
 	 */
-	public String deleteAll() {
+	public String deleteAll(int uId) {
+		List<Type> types = typeDao.getAll();
+		for (Type type : types) {
+			articleService.deleteArticlesByTid(type.getId(), uId);
+		}
 		boolean result = typeDao.deleteAll();
 		String message = "";
 		if(result) {
@@ -118,18 +144,5 @@ public class TypeService {
 		return page;
 	}
 	
-	/**
-	 * 删除多篇标签
-	 * @param ids
-	 * @return
-	 */
-	public String delChecked(String[] ids) {
-		boolean result = typeDao.deleteTypes(ids);
-		if(result) {
-			logger.info("部分标签删除成功");
-			return "删除成功";
-		}
-		logger.error("部分标签删除失败");
-		return "删除失败";
-	}
+	
 }

@@ -79,6 +79,30 @@ public class MessageDao {
 	}
 	
 	/**
+	 * 获得某个用户留过的所有留言
+	 * @param uId
+	 * @return
+	 */
+	public List<Integer> getMessageByUId(int uId){
+		List<Integer> ids = new ArrayList<Integer>();
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement("select id from message where uId=?");
+			prep.setInt(1, uId);
+			ResultSet rs = prep.executeQuery();
+			while(rs.next()) {
+				ids.add(rs.getInt("id"));
+			}	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		return ids;
+	}
+	
+	/**
 	 * 添加留言
 	 * @param message
 	 */
@@ -156,7 +180,10 @@ public class MessageDao {
 		sb.append("delete from message where id in (");
 		int[] params = new int[ids.length];
 		for (int i=0;i<ids.length;i++) {
-			params[i] = Integer.parseInt(ids[i]);
+			if(ids[i]!=null && !"".equals(ids[i])) {
+				params[i] = Integer.parseInt(ids[i]);
+			}
+			
 			if(i == ids.length-1) {
 				sb.append("?");
 			}else {

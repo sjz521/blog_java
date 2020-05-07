@@ -49,6 +49,7 @@ public class BlogAboutController extends HttpServlet {
 		request.setAttribute("title", title);*/
 		
 		request.setAttribute("introduction", admin.getIntroduction());
+		request.setAttribute("isAbout", true);
 		request.getRequestDispatcher("../view/blog/about.jsp").forward(request, response);
 	}
 

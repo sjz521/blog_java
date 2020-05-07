@@ -11,6 +11,7 @@ import javax.swing.LookAndFeel;
 import org.apache.log4j.Logger;
 
 import cn.edu.tzc.blog.dao.UserDao;
+import cn.edu.tzc.blog.domain.MessageInfo;
 import cn.edu.tzc.blog.domain.Page;
 import cn.edu.tzc.blog.domain.User;
 import cn.edu.tzc.blog.service.exception.UserException;
@@ -23,6 +24,7 @@ public class UserService extends FileUtil {
 	private UserDao userDao = new UserDao();
 	private MD5Util md5Util = new MD5Util();
 	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private MessageService messageService = new MessageService();
 	
 	/**
 	 * 按邮箱查找用户
@@ -123,6 +125,7 @@ public class UserService extends FileUtil {
 		boolean result = userDao.deleteUser(id);
 		if(result) {
 			logger.info("用户"+user.getEmail()+"删除成功");
+			messageService.deleteMessagesByUid(id);
 			return "用户删除成功";
 		}else {
 			logger.info("用户"+user.getEmail()+"删除失败");
@@ -140,6 +143,9 @@ public class UserService extends FileUtil {
 		boolean result = userDao.deleteUsers(ids);
 		if(result) {
 			logger.info("多个用户删除成功");
+			for (String uId : ids) {
+				messageService.deleteMessagesByUid(Integer.parseInt(uId));
+			}
 			return "用户删除成功";
 		}else {
 			logger.info("多个用户删除失败");
@@ -152,9 +158,13 @@ public class UserService extends FileUtil {
 	 * @return
 	 */
 	public String deleteAllUser() {
+		List<User> users = userDao.getAllUser();
 		boolean result = userDao.deleteAllUser();
 		if(result) {
 			logger.info("除了博主外所有用户删除成功");
+			for (User user : users) {
+				messageService.deleteMessagesByUid(user.getId());
+			}
 			return "用户删除成功";
 		}else {
 			logger.info("除了博主外所有用户删除失败");
@@ -229,8 +239,7 @@ public class UserService extends FileUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}
-		
+		}	
 	}
 	
 }

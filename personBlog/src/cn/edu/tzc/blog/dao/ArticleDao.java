@@ -90,6 +90,71 @@ public class ArticleDao {
 	}
 	
 	/**
+	 * 查找分类下的文章
+	 * @param tId
+	 * @param uId
+	 * @return
+	 */
+	public List<ArticleInfo> getArticlesByTid(int tId,int uId){
+		List<ArticleInfo> articles = new ArrayList<>();
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement("select * from article where uid=? and tid=?");
+			prep.setInt(1, uId);
+			prep.setInt(2, tId);
+			ResultSet rs = prep.executeQuery();
+			while(rs.next()) {
+				ArticleInfo article = new ArticleInfo();
+				article.setId(rs.getInt("id"));
+				article.setTitle(rs.getString("title"));
+				article.setIntroduction(rs.getString("introduction"));
+				article.setContent(rs.getString("content"));
+				article.setCreated_at(rs.getTimestamp("created_at"));
+				article.setPhoto(rs.getString("photo"));
+				article.setUid(rs.getInt("uid"));
+				article.setTid(rs.getInt("tid"));
+				article.setAuthor(rs.getString("author"));
+				article.setTypeName(rs.getString("typeName"));
+				
+				articles.add(article);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		return articles;
+	}
+	
+	/**
+	 * 根据tid获得该分类下所有文章id
+	 * @param tId
+	 * @param uId
+	 * @return
+	 */
+	public List<Integer> getArticleIdsByTid(int tId,int uId){
+		List<Integer> ids = new ArrayList<>();
+		Connection connection = DBUtil.getConnection();
+		try {
+			PreparedStatement prep = connection.prepareStatement("select id from article where uid=? and tid=?");
+			prep.setInt(1, uId);
+			prep.setInt(2, tId);
+			ResultSet rs = prep.executeQuery();
+			while(rs.next()) {
+				ids.add(rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(connection);
+		}
+		return ids;
+	}
+	
+	
+	/**
 	 * 获得全部文章数
 	 * @param uId
 	 * @return
@@ -255,10 +320,10 @@ public class ArticleDao {
 	 * @return
 	 */
 	public boolean deleteArticles(String[] ids) {
+		int[] params = new int[ids.length];
 		//根据id数量组成SQL语句
 		StringBuilder sb = new StringBuilder();
 		sb.append("delete from article where id in (");
-		int[] params = new int[ids.length];
 		for (int i=0;i<ids.length;i++) {
 			params[i] = Integer.parseInt(ids[i]);
 			if(i == ids.length-1) {

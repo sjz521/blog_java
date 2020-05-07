@@ -18,7 +18,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileItem;
 
-public class FileUtil {
+public class FileUtil extends BasicUtil {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**

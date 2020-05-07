@@ -78,6 +78,7 @@ public class BlogHomeController extends HttpServlet {
 		//request.setAttribute("title", title);
 		
 		request.setAttribute("isType", isType);
+		request.setAttribute("isArticle", true);
 		request.getRequestDispatcher("../view/blog/blog_home.jsp").forward(request, response);
 	}
 
