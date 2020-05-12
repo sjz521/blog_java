@@ -117,7 +117,7 @@ public class ArticleService extends FileUtil {
 	 */
 	public String updateArticle(Article article,String imgPath,String imgPublicPath,String contentPath,String contentPublicPath) {
 		Article oldInfo = articleDao.findById(article.getId());
-		if(article.getPhoto() != oldInfo.getPhoto()) {
+		if(!article.getPhoto().equals(oldInfo.getPhoto())) {
 			delFile(imgPath, oldInfo.getPhoto());
 			delFile(imgPublicPath, oldInfo.getPhoto());
 		}
